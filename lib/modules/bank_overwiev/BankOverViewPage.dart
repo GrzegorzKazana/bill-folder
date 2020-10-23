@@ -4,6 +4,7 @@ import 'components/bank_app_bar.dart';
 import 'components/bank_tab_header.dart';
 import 'components/bank_overview_drawer.dart';
 import 'containers/person_summary_list.dart';
+import 'containers/bank_summary_bar.dart';
 
 class MyHomePage extends StatelessWidget {
   final _tabs = ["Tab 1", "Tab 2"];
@@ -13,6 +14,10 @@ class MyHomePage extends StatelessWidget {
       SliverOverlapAbsorber(
         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         sliver: BankAppBar(),
+      ),
+      SliverPersistentHeader(
+        pinned: true,
+        delegate: BankSummaryBarDelegate(),
       ),
       SliverPersistentHeader(
           pinned: true,

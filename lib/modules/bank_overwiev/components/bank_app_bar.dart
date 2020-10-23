@@ -6,12 +6,13 @@ class BankAppBar extends StatelessWidget {
     return SliverAppBar(
       floating: false,
       pinned: true,
-      expandedHeight: 200,
+      expandedHeight: 75,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        title: Text("Thingy thing", style: TextStyle(fontSize: 32)),
-        titlePadding: EdgeInsets.symmetric(vertical: 8),
+        title: Text("Thingy thing", style: TextStyle(fontSize: 20)),
+        titlePadding: EdgeInsets.symmetric(vertical: 12),
       ),
+      elevation: 0,
     );
   }
 }
