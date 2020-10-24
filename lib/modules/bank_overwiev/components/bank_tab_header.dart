@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-TabBar bankTabHeader(List<String> tabs) {
+TabBar bankTabHeader(List<String> tabs, TabController controller) {
   return TabBar(
+    controller: controller,
     indicatorColor: Colors.white,
     labelColor: Colors.white,
     unselectedLabelColor: Colors.white,
