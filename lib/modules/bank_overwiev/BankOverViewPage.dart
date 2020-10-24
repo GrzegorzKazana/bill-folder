@@ -1,3 +1,4 @@
+import 'package:bill_folder/modules/bank_overwiev/containers/expense_list.dart';
 import 'package:flutter/material.dart';
 
 import 'components/bank_app_bar.dart';
@@ -7,7 +8,7 @@ import 'containers/person_summary_list.dart';
 import 'containers/bank_summary_bar.dart';
 
 class MyHomePage extends StatelessWidget {
-  final _tabs = ["Tab 1", "Tab 2"];
+  final _tabs = ["Participants", "Expenses"];
 
   List<Widget> _buildHeader(BuildContext context, bool innerBoxIsScrolled) {
     return [
@@ -21,11 +22,12 @@ class MyHomePage extends StatelessWidget {
       ),
       SliverPersistentHeader(
           pinned: true,
-          delegate: BandTabPersistentHeaderDelegate(bankTabHeader(_tabs))),
+          delegate: BandTabPersistentHeaderDelegate(bankTabHeader(_tabs),
+              color: Theme.of(context).colorScheme.primary)),
     ];
   }
 
-  Widget _buildTab(String tabName, {Widget child}) {
+  Widget _buildTab(String tabName, {Widget child, Widget sliver}) {
     return SafeArea(
       top: false,
       bottom: false,
@@ -36,7 +38,8 @@ class MyHomePage extends StatelessWidget {
             SliverOverlapInjector(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             ),
-            SliverToBoxAdapter(child: child),
+            if (sliver != null) sliver,
+            if (child != null) SliverToBoxAdapter(child: child),
           ],
         ),
       ),
@@ -50,11 +53,10 @@ class MyHomePage extends StatelessWidget {
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: _buildHeader,
-            body: TabBarView(
-              children: _tabs
-                  .map((name) => _buildTab(name, child: PersonSummaryList()))
-                  .toList(),
-            ),
+            body: TabBarView(children: [
+              _buildTab(_tabs[0], child: PersonSummaryList()),
+              _buildTab(_tabs[1], child: ExpenseList())
+            ]),
           ),
           drawer: Drawer(
             child: BankOverviewDrawer(),

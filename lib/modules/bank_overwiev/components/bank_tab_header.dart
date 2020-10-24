@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 
 TabBar bankTabHeader(List<String> tabs) {
   return TabBar(
-    labelColor: Colors.black87,
-    unselectedLabelColor: Colors.grey,
+    indicatorColor: Colors.white,
+    labelColor: Colors.white,
+    unselectedLabelColor: Colors.white,
+    indicatorWeight: 4,
     tabs: tabs.map((tab) => Tab(text: tab)).toList(),
   );
 }
 
 class BandTabPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   final TabBar _tabBar;
+  final Color color;
 
-  BandTabPersistentHeaderDelegate(this._tabBar);
+  BandTabPersistentHeaderDelegate(this._tabBar, {this.color});
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
@@ -23,7 +26,7 @@ class BandTabPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
       child: _tabBar,
-      color: Colors.white,
+      color: color,
     );
   }
 
