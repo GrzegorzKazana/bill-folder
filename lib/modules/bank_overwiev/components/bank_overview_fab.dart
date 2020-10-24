@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class BankOverviewFAB extends StatelessWidget {
+  final VoidCallback onAddParticipant;
+  final VoidCallback onAddExpense;
+
+  BankOverviewFAB({this.onAddExpense, this.onAddParticipant});
+
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
@@ -13,12 +18,12 @@ class BankOverviewFAB extends StatelessWidget {
             child: Icon(Icons.group_add),
             label: 'Add participant',
             labelStyle: TextStyle(fontSize: 24),
-            onTap: () {}),
+            onTap: onAddParticipant),
         SpeedDialChild(
             child: Icon(Icons.attach_money),
             label: 'Add expense',
             labelStyle: TextStyle(fontSize: 24),
-            onTap: () {}),
+            onTap: onAddExpense),
       ],
     );
   }
