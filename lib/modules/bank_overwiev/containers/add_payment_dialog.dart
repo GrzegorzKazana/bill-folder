@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './add_payment_form.dart';
+import './payment_form/index.dart';
 import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 

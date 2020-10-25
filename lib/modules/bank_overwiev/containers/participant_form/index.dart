@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import './avatar.dart';
+import 'package:bill_folder/common/components/avatar.dart';
+import 'package:bill_folder/common/components/labeled_form_field_container.dart';
 
 class AvatarNameForm extends StatelessWidget {
   final String name;
@@ -32,34 +33,24 @@ class AvatarNameForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-        child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 16),
-          child: GestureDetector(
+        child: Column(children: [
+      LabeledFormFieldContainer(
+          label: 'Name:',
+          input: TextFormField(
+            style: TextStyle(fontSize: 24),
+            validator: (value) =>
+                value.isEmpty ? 'Name may not be empty' : null,
+            onChanged: onNameChange,
+          )),
+      LabeledFormFieldContainer(
+          label: 'Avatar:',
+          input: GestureDetector(
               onTap: () => _showColorPicker(context),
-              child: Row(
-                children: [
-                  Avatar(
+              child: Container(
+                  alignment: Alignment.center,
+                  child: Avatar(
                       color: color,
-                      name: name.isEmpty ? 'Unknown Person' : name)
-                ],
-              )),
-        ),
-        Expanded(
-            child: Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                  ),
-                  style: TextStyle(fontSize: 22),
-                  validator: (value) =>
-                      value.isEmpty ? 'Name may not be empty' : null,
-                  onChanged: onNameChange,
-                ))),
-      ],
-    ));
+                      name: name.isEmpty ? 'Unknown Person' : name)))),
+    ]));
   }
 }

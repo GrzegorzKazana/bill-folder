@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bill_folder/common/components/avatar_name_form.dart';
+import './participant_form/index.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 import 'package:bill_folder/common/utils/get_random_color.dart';
 

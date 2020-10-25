@@ -13,7 +13,7 @@ class CustomDialog extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
             constraints: BoxConstraints(
-                minHeight: 200, maxHeight: 400, minWidth: 200, maxWidth: 400),
+                minHeight: 200, maxHeight: 500, minWidth: 200, maxWidth: 400),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
@@ -24,9 +24,14 @@ class CustomDialog extends StatelessWidget {
                       margin: EdgeInsets.all(4),
                       child: Text(title, style: TextStyle(fontSize: 24))),
                 if (child != null)
-                  Padding(
+                  Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: child),
+                      constraints: BoxConstraints(
+                          minHeight: 200,
+                          maxHeight: 400,
+                          minWidth: 200,
+                          maxWidth: 400),
+                      child: SingleChildScrollView(child: child)),
                 if (footer.length > 0)
                   Padding(
                       padding: EdgeInsets.only(top: 12, left: 12, right: 12),
