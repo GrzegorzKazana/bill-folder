@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:bill_folder/common/components/avatar.dart';
 import 'package:bill_folder/common/components/labeled_form_field_container.dart';
 
-class AvatarNameForm extends StatelessWidget {
+import './name_input.dart';
+import './avatar_color_input.dart';
+
+final participantFormKey = GlobalKey<FormState>();
+
+class ParticipantForm extends StatelessWidget {
   final String name;
   final Color color;
   final void Function(String) onNameChange;
   final void Function(Color) onColorChange;
 
-  AvatarNameForm(
+  ParticipantForm(
       {@required this.name,
       @required this.color,
       this.onNameChange,
@@ -33,24 +37,19 @@ class AvatarNameForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
+        key: participantFormKey,
         child: Column(children: [
-      LabeledFormFieldContainer(
-          label: 'Name:',
-          input: TextFormField(
-            style: TextStyle(fontSize: 24),
-            validator: (value) =>
-                value.isEmpty ? 'Name may not be empty' : null,
-            onChanged: onNameChange,
-          )),
-      LabeledFormFieldContainer(
-          label: 'Avatar:',
-          input: GestureDetector(
-              onTap: () => _showColorPicker(context),
-              child: Container(
-                  alignment: Alignment.center,
-                  child: Avatar(
-                      color: color,
-                      name: name.isEmpty ? 'Unknown Person' : name)))),
-    ]));
+          LabeledFormFieldContainer(
+              label: 'Name:',
+              input: NameInput(
+                onNameChange: onNameChange,
+              )),
+          LabeledFormFieldContainer(
+              label: 'Avatar:',
+              input: AvatarColorInput(
+                  name: name,
+                  color: color,
+                  onTap: () => _showColorPicker(context))),
+        ]));
   }
 }

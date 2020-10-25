@@ -19,7 +19,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
   Widget build(BuildContext context) {
     return CustomDialog(
       title: 'Add payment',
-      child: AddPaymentForm(
+      child: PaymentForm(
         selectedTags: selectedTags,
         onSelectedTagsChanged: (tags) => setState(() => selectedTags = tags),
         price: price,
@@ -39,7 +39,8 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
         ),
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (paymentFormKey.currentState.validate())
+                Navigator.of(context).pop();
             },
             child: Text('Add', style: TextStyle(fontSize: 16))),
       ],

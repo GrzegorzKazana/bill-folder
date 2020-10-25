@@ -12,10 +12,12 @@ class PayerDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return DropdownButtonFormField<String>(
         isExpanded: true,
         style: TextStyle(fontSize: 24, color: Colors.black),
         value: payer,
+        validator: (val) =>
+            val == null || val.isEmpty ? 'Payer must be specified' : null,
         onChanged: onPayerChanged,
         items: possiblePayers
             .map((value) => DropdownMenuItem<String>(

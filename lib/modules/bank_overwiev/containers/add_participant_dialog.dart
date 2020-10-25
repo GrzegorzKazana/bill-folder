@@ -17,7 +17,7 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
   Widget build(BuildContext context) {
     return CustomDialog(
       title: 'Add participant',
-      child: AvatarNameForm(
+      child: ParticipantForm(
         name: _name,
         color: _avatarColor,
         onColorChange: (color) => setState(() => _avatarColor = color),
@@ -32,7 +32,8 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
         ),
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (participantFormKey.currentState.validate())
+                Navigator.of(context).pop();
             },
             child: Text('Add', style: TextStyle(fontSize: 16))),
       ],

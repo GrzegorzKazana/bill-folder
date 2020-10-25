@@ -8,7 +8,9 @@ import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/choice_chip_dialog.dart';
 import 'package:bill_folder/common/components/labeled_form_field_container.dart';
 
-class AddPaymentForm extends StatelessWidget {
+final paymentFormKey = GlobalKey<FormState>();
+
+class PaymentForm extends StatelessWidget {
   final List<String> selectedTags;
   final void Function(List<String>) onSelectedTagsChanged;
 
@@ -22,7 +24,7 @@ class AddPaymentForm extends StatelessWidget {
   final DateTime paymentDate;
   final void Function(DateTime) onPaymentDateChanged;
 
-  AddPaymentForm(
+  PaymentForm(
       {this.selectedTags = const [],
       this.onSelectedTagsChanged,
       this.price,
@@ -64,36 +66,38 @@ class AddPaymentForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        LabeledFormFieldContainer(
-          label: 'Payer:',
-          input: PayerDropdown(
-              payer: payer,
-              onPayerChanged: onPayerChanged,
-              possiblePayers: possiblePayers),
-        ),
-        LabeledFormFieldContainer(
-          label: 'Price:',
-          input: PriceInput(
-            onPriceChanged: onPriceChanged,
-          ),
-          postfix: Text(r'$'.padRight(2),
-              style: Theme.of(context).textTheme.headline5),
-        ),
-        LabeledFormFieldContainer(
-            label: 'Date:',
-            input: DateInput(
-              paymentDate: paymentDate,
-              onTap: () => _showDateDialog(context),
-            )),
-        LabeledFormFieldContainer(
-            label: 'Tags:',
-            input: TagList(
-              selectedTags: selectedTags,
-              onTap: () => _showChipDialog(context),
-            )),
-      ],
-    );
+    return Form(
+        key: paymentFormKey,
+        child: Column(
+          children: [
+            LabeledFormFieldContainer(
+              label: 'Payer:',
+              input: PayerDropdown(
+                  payer: payer,
+                  onPayerChanged: onPayerChanged,
+                  possiblePayers: possiblePayers),
+            ),
+            LabeledFormFieldContainer(
+              label: 'Price:',
+              input: PriceInput(
+                onPriceChanged: onPriceChanged,
+              ),
+              postfix: Text(r'$'.padRight(2),
+                  style: Theme.of(context).textTheme.headline5),
+            ),
+            LabeledFormFieldContainer(
+                label: 'Date:',
+                input: DateInput(
+                  paymentDate: paymentDate,
+                  onTap: () => _showDateDialog(context),
+                )),
+            LabeledFormFieldContainer(
+                label: 'Tags:',
+                input: TagList(
+                  selectedTags: selectedTags,
+                  onTap: () => _showChipDialog(context),
+                )),
+          ],
+        ));
   }
 }
