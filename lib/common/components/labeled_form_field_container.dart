@@ -14,7 +14,7 @@ class LabeledFormFieldContainer extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
           children: [
             Text(label, style: Theme.of(context).textTheme.headline6),
             SizedBox(width: 24),

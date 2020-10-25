@@ -8,8 +8,13 @@ class PersonBillSummaryHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        title: Text("test!"),
-        subtitle: Text("KEK"),
+        title: Row(children: [
+          Expanded(
+              child: Text('Grzegorz K',
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline5)),
+          Text('-24\$', style: TextStyle(fontSize: 24, color: Colors.red))
+        ]),
         trailing: !isExpanded
             ? IconButton(
                 icon: Icon(Icons.add),

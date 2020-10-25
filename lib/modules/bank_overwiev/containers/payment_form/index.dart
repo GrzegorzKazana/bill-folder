@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import './payer_dropdown.dart';
 import './price_input.dart';
 import './date_input.dart';
 import './tag_list.dart';
 import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/choice_chip_dialog.dart';
+import 'package:bill_folder/common/components/dropdown_input.dart';
 import 'package:bill_folder/common/components/labeled_form_field_container.dart';
 
 final paymentFormKey = GlobalKey<FormState>();
@@ -72,10 +72,10 @@ class PaymentForm extends StatelessWidget {
           children: [
             LabeledFormFieldContainer(
               label: 'Payer:',
-              input: PayerDropdown(
-                  payer: payer,
-                  onPayerChanged: onPayerChanged,
-                  possiblePayers: possiblePayers),
+              input: DropdownInput(
+                  value: payer,
+                  onValueChanged: onPayerChanged,
+                  possibleValues: possiblePayers),
             ),
             LabeledFormFieldContainer(
               label: 'Price:',

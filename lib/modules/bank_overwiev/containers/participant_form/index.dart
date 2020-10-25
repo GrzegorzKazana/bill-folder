@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:bill_folder/common/components/labeled_form_field_container.dart';
+import 'package:bill_folder/common/components/text_input.dart';
 
-import './name_input.dart';
 import './avatar_color_input.dart';
 
 final participantFormKey = GlobalKey<FormState>();
@@ -41,8 +41,9 @@ class ParticipantForm extends StatelessWidget {
         child: Column(children: [
           LabeledFormFieldContainer(
               label: 'Name:',
-              input: NameInput(
-                onNameChange: onNameChange,
+              input: TextInput(
+                name: 'Name',
+                onTextChange: onNameChange,
               )),
           LabeledFormFieldContainer(
               label: 'Avatar:',

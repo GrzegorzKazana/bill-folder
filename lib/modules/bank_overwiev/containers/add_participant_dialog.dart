@@ -25,9 +25,7 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
       ),
       footer: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: Navigator.of(context).pop,
           child: Text('Cancel', style: TextStyle(fontSize: 16)),
         ),
         TextButton(

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
 class BankOverviewDrawer extends StatelessWidget {
-  Widget _buildDrawerListItem({IconData icon, String title}) {
-    return ListTile(
-        leading: Icon(icon, size: 28),
-        title: Text(title, style: TextStyle(fontSize: 24)));
+  final void Function() onCreateWalletDialog;
+
+  BankOverviewDrawer({this.onCreateWalletDialog});
+
+  Widget _buildDrawerListItem(
+      {IconData icon, String title, VoidCallback onTap}) {
+    return InkWell(
+        onTap: onTap,
+        child: ListTile(
+            leading: Icon(icon, size: 28),
+            title: Text(title, style: TextStyle(fontSize: 24))));
   }
 
   @override
@@ -18,6 +25,11 @@ class BankOverviewDrawer extends StatelessWidget {
         ),
         _buildDrawerListItem(icon: Icons.ac_unit, title: "Switch the AC unit"),
         _buildDrawerListItem(icon: Icons.fastfood, title: "End world hunger"),
+        Divider(),
+        _buildDrawerListItem(
+            icon: Icons.add_circle,
+            title: "Create new wallet",
+            onTap: onCreateWalletDialog),
       ],
     );
   }
