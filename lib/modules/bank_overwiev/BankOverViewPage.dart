@@ -1,3 +1,4 @@
+import 'package:bill_folder/modules/bank_overwiev/containers/add_payment_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'components/bank_overview_drawer.dart';
@@ -32,8 +33,11 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Future<void> _showAddParticipantDialog(BuildContext context) async {
-    final result = await showDialog<String>(
-        context: context, child: AddParticipantDialog());
+    showDialog<String>(context: context, child: AddParticipantDialog());
+  }
+
+  Future<void> _showAddPaymentDialog(BuildContext context) async {
+    showDialog(context: context, child: AddPaymentDialog());
   }
 
   @override
@@ -51,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: BankOverviewFAB(
         onAddParticipant: () => _showAddParticipantDialog(context),
+        onAddExpense: () => _showAddPaymentDialog(context),
       ),
     ));
   }
