@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../components/expense_list_item.dart';
+
 class ExpenseList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ExpenseListState();
@@ -67,7 +69,7 @@ class _ExpenseListState extends State<ExpenseList> {
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: filteredExpenses
-              .map((expense) => Card(child: ListTile(title: Text(expense))))
+              .map((expense) => ExpenseListItem(expense: expense))
               .toList(),
         )
       ],
