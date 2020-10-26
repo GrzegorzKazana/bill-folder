@@ -15,7 +15,10 @@ class PriceInput extends StatelessWidget {
     return TextFormField(
       style: TextStyle(fontSize: 24),
       textAlign: TextAlign.end,
-      validator: (val) => val.isEmpty ? 'Price must not be empty' : null,
+      validator: (val) {
+        print('val: $val');
+        return val.isEmpty ? 'Price must not be empty' : null;
+      },
       keyboardType:
           TextInputType.numberWithOptions(decimal: true, signed: false),
       inputFormatters: [
