@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BankOverviewTab extends StatelessWidget {
+class BankOverviewTabContent extends StatelessWidget {
   final String tabName;
   final Widget child;
   final Widget sliver;
 
-  BankOverviewTab({@required this.tabName, this.child, this.sliver});
+  BankOverviewTabContent({@required this.tabName, this.child, this.sliver});
 
   @override
   Widget build(BuildContext context) {

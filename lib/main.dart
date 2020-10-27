@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'modules/bank_overwiev/BankOverViewPage.dart';
+import 'views/bank_overview_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: BakOverviewPage(),
     );
   }
 }

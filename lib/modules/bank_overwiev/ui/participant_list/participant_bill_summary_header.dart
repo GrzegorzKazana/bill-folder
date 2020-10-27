@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:bill_folder/common/components/avatar.dart';
 
-class PersonBillSummaryHeader extends StatelessWidget {
+class ParticipantBillSummaryHeader extends StatelessWidget {
   final bool isExpanded;
 
-  PersonBillSummaryHeader({this.isExpanded});
+  ParticipantBillSummaryHeader({this.isExpanded});
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import './add_payment_dialog.dart';
-import '../components/expense_delete_confirm_dialog.dart';
-import '../components/expense_list_item.dart';
-import '../components/expense_list_filter_header.dart';
+import 'add_payment_dialog.dart';
+import 'expense_delete_confirm_dialog.dart';
+import 'expense_list_item.dart';
+import 'expense_list_filter_header.dart';
 
 class ExpenseList extends StatefulWidget {
   @override

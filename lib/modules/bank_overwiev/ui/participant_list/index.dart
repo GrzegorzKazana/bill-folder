@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../components/person_bill_summary_header.dart';
-import '../components/person_bill_summary_detail.dart';
+import 'participant_bill_summary_header.dart';
+import 'participant_bill_summary_detail.dart';
 
-class PersonSummaryList extends StatefulWidget {
+class ParticipantSummaryList extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _PersonSummaryListState();
+  State<StatefulWidget> createState() => _ParticipantSummaryListState();
 }
 
-class _PersonSummaryListState extends State<PersonSummaryList> {
+class _ParticipantSummaryListState extends State<ParticipantSummaryList> {
   List<bool> _openItems = [true, false, false, false, true, false, true, false];
 
   void _toggleItemOpen(int index, bool isExpanded) {
@@ -26,10 +26,10 @@ class _PersonSummaryListState extends State<PersonSummaryList> {
                   isExpanded: item,
                   canTapOnHeader: true,
                   headerBuilder: (BuildContext context, bool isExpanded) =>
-                      PersonBillSummaryHeader(
+                      ParticipantBillSummaryHeader(
                     isExpanded: isExpanded,
                   ),
-                  body: PersonBillSummaryDetail(),
+                  body: ParticipantBillSummaryDetail(),
                 ))
             .toList());
   }

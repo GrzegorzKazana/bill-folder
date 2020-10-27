@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'components/bank_overview_drawer.dart';
-import 'components/bank_overview_fab.dart';
-import 'components/bank_overview_tab.dart';
-import 'containers/bank_overview_page_header.dart';
-import 'containers/person_summary_list.dart';
-import 'containers/expense_list.dart';
-import 'containers/add_participant_dialog.dart';
-import './containers/add_payment_dialog.dart';
-import './containers/add_wallet_dialog.dart';
+import '../modules/bank_overwiev/ui/drawer/index.dart';
+import '../modules/bank_overwiev/ui/common/bank_overview_fab.dart';
+import '../modules/bank_overwiev/ui/common/bank_overview_tab.dart';
+import '../modules/bank_overwiev/ui/bank_header/index.dart';
+import '../modules/bank_overwiev/ui/participant_list/index.dart';
+import '../modules/bank_overwiev/ui/expense_list/index.dart';
+import '../modules/bank_overwiev/ui/participant_list/add_participant_dialog.dart';
+import '../modules/bank_overwiev/ui/expense_list/add_payment_dialog.dart';
+import '../modules/bank_overwiev/ui/drawer/add_wallet_dialog.dart';
 
-class MyHomePage extends StatefulWidget {
+class BakOverviewPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _MyHomePageState();
+  State<StatefulWidget> createState() => _BankOverviewPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _BankOverviewPageState extends State<BakOverviewPage>
     with SingleTickerProviderStateMixin {
   final _tabs = ["Participants", "Expenses"];
 
@@ -51,8 +51,9 @@ class _MyHomePageState extends State<MyHomePage>
       body: NestedScrollView(
         headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
         body: TabBarView(controller: _tabController, children: [
-          BankOverviewTab(tabName: _tabs[0], child: PersonSummaryList()),
-          BankOverviewTab(tabName: _tabs[1], child: ExpenseList())
+          BankOverviewTabContent(
+              tabName: _tabs[0], child: ParticipantSummaryList()),
+          BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
         ]),
       ),
       drawer: Drawer(

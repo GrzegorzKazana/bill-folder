@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './bank_summary_bar.dart';
-import '../components/bank_app_bar.dart';
-import '../components/bank_tab_header.dart';
+import 'bank_summary_bar.dart';
+import 'bank_app_bar.dart';
+import 'bank_tab_header.dart';
 
 typedef List<Widget> HeaderSliverBuilder(
     BuildContext context, bool innerBoxIsScrolled);
