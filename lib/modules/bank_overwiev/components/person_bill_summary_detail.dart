@@ -8,7 +8,7 @@ class PersonBillSummaryDetail extends StatelessWidget {
         child: Column(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.only(left: 8, right: 16),
                 child: Column(
                   children: [
                     Row(

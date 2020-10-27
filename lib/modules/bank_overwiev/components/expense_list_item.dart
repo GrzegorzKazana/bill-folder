@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 
 class ExpenseListItem extends StatelessWidget {
   final String expense;
+  final VoidCallback onConfirmDelete;
+  final VoidCallback onEditPayment;
 
-  ExpenseListItem({@required this.expense});
+  ExpenseListItem({
+    @required this.expense,
+    @required this.onConfirmDelete,
+    @required this.onEditPayment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +18,8 @@ class ExpenseListItem extends StatelessWidget {
             constraints: BoxConstraints(maxHeight: 100),
             child: Row(
               children: [
-                Container(
-                  constraints: BoxConstraints(maxWidth: 120),
+                SizedBox(
+                  width: 120,
                   child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: FittedBox(
@@ -47,6 +53,8 @@ class ExpenseListItem extends StatelessWidget {
                           ])),
                 ),
                 PopupMenuButton(
+                    onSelected: (str) =>
+                        str == 'Delete' ? onConfirmDelete() : onEditPayment(),
                     itemBuilder: (_) => [
                           PopupMenuItem<String>(
                               child: Text('Edit'), value: 'Edit'),

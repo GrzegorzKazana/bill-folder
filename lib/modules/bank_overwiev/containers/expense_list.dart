@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import './add_payment_dialog.dart';
+import '../components/expense_delete_confirm_dialog.dart';
 import '../components/expense_list_item.dart';
+import '../components/expense_list_filter_header.dart';
 
 class ExpenseList extends StatefulWidget {
   @override
@@ -28,48 +31,41 @@ class _ExpenseListState extends State<ExpenseList> {
     }
   }
 
+  Future<void> _showConfirmDeleteDialog(BuildContext context) async {
+    final shouldDelete = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        child: ExpenseDeleteConfirmDialog());
+  }
+
+  Future<void> _showEditExpenseEditForm(BuildContext context) async {
+    showDialog(
+        context: context, child: AddPaymentDialog(title: 'Edit payment'));
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredExpenses = _getFilteredExpenses(_expenses, _dropdownValue);
 
     return Column(
       children: [
-        Container(
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Text(
-                      '${filteredExpenses.length} out of ${_expenses.length}',
-                      style: TextStyle(fontSize: 20),
-                    )),
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: DropdownButton<String>(
-                        icon: Icon(Icons.filter_list_alt),
-                        iconSize: 32,
-                        style: TextStyle(fontSize: 24, color: Colors.black),
-                        value: _dropdownValue,
-                        onChanged: (newValue) =>
-                            setState(() => _dropdownValue = newValue),
-                        items: [
-                          DropdownMenuItem<String>(
-                              value: null, child: Text("All")),
-                          ..._dropdownOptions
-                              .map((value) => DropdownMenuItem<String>(
-                                  value: value, child: Text(value)))
-                              .toList()
-                        ])),
-              ],
-            )),
+        ExpenseListFilterHeader(
+            expenses: _expenses,
+            filteredExpenses: _getFilteredExpenses(_expenses, _dropdownValue),
+            dropdownValue: _dropdownValue,
+            dropdownOptions: _dropdownOptions,
+            onDropdownValueChange: (val) =>
+                setState(() => _dropdownValue = val)),
         ListView(
           padding: EdgeInsets.all(0),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: filteredExpenses
-              .map((expense) => ExpenseListItem(expense: expense))
+              .map((expense) => ExpenseListItem(
+                    expense: expense,
+                    onEditPayment: () => _showEditExpenseEditForm(context),
+                    onConfirmDelete: () => _showConfirmDeleteDialog(context),
+                  ))
               .toList(),
         )
       ],

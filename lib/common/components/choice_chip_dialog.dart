@@ -39,20 +39,22 @@ class _ChoiceChipDialogState extends State<ChoiceChipDialog> {
   Widget build(BuildContext context) {
     return CustomDialog(
       title: widget.title,
-      child: Wrap(
-          runSpacing: 4,
-          spacing: 4,
-          alignment: WrapAlignment.center,
-          children: widget.options
-              .map((option) => ChoiceChip(
-                    onSelected: (isSelected) =>
-                        _toggleSelectedOption(option, isSelected),
-                    label: Text(option),
-                    selected: selectedOptions.contains(option),
-                    labelPadding: EdgeInsets.symmetric(horizontal: 8),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ))
-              .toList()),
+      child: Container(
+          child: Wrap(
+              runSpacing: 4,
+              spacing: 4,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: widget.options
+                  .map((option) => ChoiceChip(
+                        onSelected: (isSelected) =>
+                            _toggleSelectedOption(option, isSelected),
+                        label: Text(option),
+                        selected: selectedOptions.contains(option),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 8),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ))
+                  .toList())),
       footer: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(widget.selectedOptions),

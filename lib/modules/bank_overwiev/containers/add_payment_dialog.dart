@@ -5,6 +5,10 @@ import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 
 class AddPaymentDialog extends StatefulWidget {
+  final String title;
+
+  AddPaymentDialog({this.title});
+
   @override
   State<StatefulWidget> createState() => _AddPaymentDialogState();
 }
@@ -18,7 +22,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
-      title: 'Add payment',
+      title: widget.title ?? 'Add payment',
       child: PaymentForm(
         selectedTags: selectedTags,
         onSelectedTagsChanged: (tags) => setState(() => selectedTags = tags),
