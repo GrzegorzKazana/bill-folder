@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'views/bank_overview_page.dart';
+import 'modules/bank_overwiev/bank_overview_page.dart';
 
 void main() {
   runApp(MyApp());

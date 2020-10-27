@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../modules/bank_overwiev/ui/drawer/index.dart';
-import '../modules/bank_overwiev/ui/common/bank_overview_fab.dart';
-import '../modules/bank_overwiev/ui/common/bank_overview_tab.dart';
-import '../modules/bank_overwiev/ui/bank_header/index.dart';
-import '../modules/bank_overwiev/ui/participant_list/index.dart';
-import '../modules/bank_overwiev/ui/expense_list/index.dart';
-import '../modules/bank_overwiev/ui/participant_list/add_participant_dialog.dart';
-import '../modules/bank_overwiev/ui/expense_list/add_payment_dialog.dart';
-import '../modules/bank_overwiev/ui/drawer/add_wallet_dialog.dart';
+import 'ui/drawer/index.dart';
+import 'ui/common/bank_overview_fab.dart';
+import 'ui/common/bank_overview_tab.dart';
+import 'ui/bank_header/index.dart';
+import 'ui/participant_list/index.dart';
+import 'ui/expense_list/index.dart';
+import 'ui/participant_list/add_participant_dialog.dart';
+import 'ui/expense_list/add_payment_dialog.dart';
+import 'ui/drawer/add_wallet_dialog.dart';
+
+import './state/bank_overview_state.dart';
 
 class BakOverviewPage extends StatefulWidget {
   @override
@@ -47,24 +50,26 @@ class _BankOverviewPageState extends State<BakOverviewPage>
 
   @override
   Widget build(BuildContext context) {
-    return (Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
-        body: TabBarView(controller: _tabController, children: [
-          BankOverviewTabContent(
-              tabName: _tabs[0], child: ParticipantSummaryList()),
-          BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
-        ]),
-      ),
-      drawer: Drawer(
-        child: BankOverviewDrawer(
-          onCreateWalletDialog: () => _showCreateWallet(context),
-        ),
-      ),
-      floatingActionButton: BankOverviewFAB(
-        onAddParticipant: () => _showAddParticipantDialog(context),
-        onAddExpense: () => _showAddPaymentDialog(context),
-      ),
-    ));
+    return ListenableProvider(
+        create: (_) => BankOverviewState(),
+        child: Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
+            body: TabBarView(controller: _tabController, children: [
+              BankOverviewTabContent(
+                  tabName: _tabs[0], child: ParticipantSummaryList()),
+              BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
+            ]),
+          ),
+          drawer: Drawer(
+            child: BankOverviewDrawer(
+              onCreateWalletDialog: () => _showCreateWallet(context),
+            ),
+          ),
+          floatingActionButton: BankOverviewFAB(
+            onAddParticipant: () => _showAddParticipantDialog(context),
+            onAddExpense: () => _showAddPaymentDialog(context),
+          ),
+        ));
   }
 }
