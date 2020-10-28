@@ -9,7 +9,6 @@ import 'ui/participant_list/index.dart';
 import 'ui/expense_list/index.dart';
 import 'ui/participant_list/add_participant_dialog.dart';
 import 'ui/expense_list/add_payment_dialog.dart';
-import 'ui/drawer/add_wallet_dialog.dart';
 
 import './state/bank_overview_state.dart';
 
@@ -36,10 +35,6 @@ class _BankOverviewPageState extends State<BakOverviewPage>
     super.dispose();
   }
 
-  Future<void> _showCreateWallet(BuildContext context) async {
-    showDialog(context: context, child: AddWalletDialog());
-  }
-
   Future<void> _showAddParticipantDialog(BuildContext context) async {
     showDialog<String>(context: context, child: AddParticipantDialog());
   }
@@ -62,9 +57,7 @@ class _BankOverviewPageState extends State<BakOverviewPage>
             ]),
           ),
           drawer: Drawer(
-            child: BankOverviewDrawer(
-              onCreateWalletDialog: () => _showCreateWallet(context),
-            ),
+            child: BankOverviewDrawer(),
           ),
           floatingActionButton: BankOverviewFAB(
             onAddParticipant: () => _showAddParticipantDialog(context),

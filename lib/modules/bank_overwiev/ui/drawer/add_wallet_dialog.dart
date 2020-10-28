@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 
 import './wallet_form/index.dart';
+import '../../models/Currency.dart';
+import '../../models/Wallet.dart';
 
 class AddWalletDialog extends StatefulWidget {
   @override
@@ -11,7 +13,14 @@ class AddWalletDialog extends StatefulWidget {
 
 class _AddWalletDialog extends State<AddWalletDialog> {
   String name;
-  String currency = 'PLN';
+  Currency currency = Currency.DOLLAR;
+
+  void _submit() {
+    if (!walletFormKey.currentState.validate()) return;
+
+    final data = Wallet(name: name, currency: currency);
+    Navigator.of(context).pop(data);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +29,7 @@ class _AddWalletDialog extends State<AddWalletDialog> {
       child: WalletForm(
         onNameChange: (val) => setState(() => name = val),
         currency: currency,
-        possibleCurrencies: ['\$', 'PLN', '€', '£'],
+        possibleCurrencies: Currency.values,
         onCurrencyChange: (val) => setState(() => currency = val),
       ),
       footer: [
@@ -29,10 +38,7 @@ class _AddWalletDialog extends State<AddWalletDialog> {
           child: Text('Cancel', style: TextStyle(fontSize: 16)),
         ),
         TextButton(
-            onPressed: () {
-              if (walletFormKey.currentState.validate())
-                Navigator.of(context).pop();
-            },
+            onPressed: _submit,
             child: Text('Add', style: TextStyle(fontSize: 16))),
       ],
     );

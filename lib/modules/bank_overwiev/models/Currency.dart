@@ -1,3 +1,5 @@
+import 'package:bill_folder/common/utils/enum_from_string.dart';
+
 enum Currency {
   DOLLAR,
   EURO,
@@ -5,7 +7,7 @@ enum Currency {
   PLN,
 }
 
-String currencyToString(Currency currency) {
+String formatCurrency(Currency currency) {
   switch (currency) {
     case Currency.DOLLAR:
       return '\$';
@@ -22,3 +24,10 @@ String currencyToString(Currency currency) {
 
   return '';
 }
+
+String formatCurrencyValue(String value) {
+  return formatCurrency(stringToCurrency(value));
+}
+
+final currencyToString = createEnumToString(Currency.values);
+final stringToCurrency = createEnumFromString(Currency.values);

@@ -4,11 +4,13 @@ class DropdownInput extends StatelessWidget {
   final String value;
   final List<String> possibleValues;
   final void Function(String) onValueChanged;
+  final String Function(String) valueFormatter;
 
   DropdownInput(
       {@required this.value,
       @required this.possibleValues,
-      @required this.onValueChanged});
+      @required this.onValueChanged,
+      this.valueFormatter});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,11 @@ class DropdownInput extends StatelessWidget {
         onChanged: onValueChanged,
         items: possibleValues
             .map((value) => DropdownMenuItem<String>(
-                value: value, child: Center(child: Text(value))))
+                value: value,
+                child: Center(
+                    child: Text(valueFormatter != null
+                        ? valueFormatter(value)
+                        : value))))
             .toList());
   }
 }

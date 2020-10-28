@@ -1,11 +1,8 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 
-import 'package:bill_folder/common/models/monetary.dart';
-
 import '../models/Wallet.dart';
 import '../models/Expense.dart';
-import '../models/ExpenseTag.dart';
 import '../models/Participant.dart';
 
 class BankOverviewState extends ChangeNotifier {
@@ -21,42 +18,39 @@ class BankOverviewState extends ChangeNotifier {
   UnmodifiableListView<Participant> get participants =>
       UnmodifiableListView(_participants);
 
-  void addWallet({@required String name}) {
-    if (_currentWallet == null) return;
-
-    final wallet = Wallet(name: name, currency: _currentWallet.currency);
-
+  void addWallet(Wallet wallet) {
     _wallets.add(wallet);
+    _currentWallet = wallet;
     notifyListeners();
   }
 
-  void addExpense(
-      {@required String payerId,
-      @required Monetary price,
-      @required DateTime date,
-      @required List<ExpenseTag> tags}) {
-    final expense =
-        Expense(payerId: payerId, price: price, date: date, tags: tags);
+  void switchToWallet(String walletId) {
+    if (currentWallet.id == walletId) return;
 
+    final wallet = _wallets.firstWhere((wallet) => wallet.id == walletId,
+        orElse: () => null);
+
+    if (wallet == null) return;
+
+    _currentWallet = wallet;
+    notifyListeners();
+  }
+
+  void addExpense(Expense expense) {
     _expenses.add(expense);
     notifyListeners();
   }
 
-  void addParticipant({@required String name, @required Color avatarColor}) {
-    final participant = Participant(name: name, avatarColor: avatarColor);
-
+  void addParticipant(Participant participant) {
     _participants.add(participant);
     notifyListeners();
   }
 
-  void updateExpense(String expenseId,
-      {String payerId, Monetary price, DateTime date, List<ExpenseTag> tags}) {
-    _expenses = _expenses.map((oldExpense) {
-      if (oldExpense.id != expenseId) return oldExpense;
+  void updateExpense(String expenseId, Expense expense) {
+    _expenses = _expenses
+        .map((oldExpense) => oldExpense.id == expenseId ? expense : oldExpense)
+        .toList();
 
-      return oldExpense.copyWith(
-          payerId: payerId, price: price, date: date, tags: tags);
-    }).toList();
     notifyListeners();
   }
 }
