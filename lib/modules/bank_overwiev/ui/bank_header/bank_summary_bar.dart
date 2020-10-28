@@ -1,8 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+import 'package:bill_folder/common/models/monetary.dart';
+
 class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
+  final Monetary costOfWallet;
+  final int numberOfParticipants;
+
+  BankSummaryBarDelegate(
+      {@required this.costOfWallet, @required this.numberOfParticipants});
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -12,7 +19,7 @@ class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
 
       final leftLabel = [
         TextSpan(
-            text: "Money",
+            text: costOfWallet.toString(),
             style: TextStyle(
               fontSize: 32,
               color: Colors.white,
@@ -24,7 +31,8 @@ class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
             child: Icon(Icons.account_circle, size: 32, color: Colors.white),
             style: TextStyle(fontSize: 32)),
         TextSpan(
-            text: "users", style: TextStyle(fontSize: 32, color: Colors.white))
+            text: " users: $numberOfParticipants",
+            style: TextStyle(fontSize: 32, color: Colors.white))
       ];
 
       return Container(

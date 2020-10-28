@@ -1,12 +1,13 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 
+import 'package:bill_folder/common/models/monetary.dart';
+
 import '../models/Wallet.dart';
 import '../models/Expense.dart';
 import '../models/Participant.dart';
 
 class BankOverviewState extends ChangeNotifier {
-  String hello = 'world';
   Wallet _currentWallet;
   List<Wallet> _wallets = [];
   List<Expense> _expenses = [];
@@ -17,6 +18,14 @@ class BankOverviewState extends ChangeNotifier {
   UnmodifiableListView<Expense> get expenses => UnmodifiableListView(_expenses);
   UnmodifiableListView<Participant> get participants =>
       UnmodifiableListView(_participants);
+  UnmodifiableListView<ParticipantWithStats> get participantsWithStats =>
+      UnmodifiableListView(_participants
+          .map((participant) => ParticipantWithStats(
+              info: participant, stats: _calculateStats(participant)))
+          .toList());
+
+  Monetary get totalCostOfCurrentWallet => Monetary(unit: 42, cent: 14);
+  int get numberOfParticipants => _participants.length;
 
   void addWallet(Wallet wallet) {
     _wallets.add(wallet);
@@ -52,5 +61,13 @@ class BankOverviewState extends ChangeNotifier {
         .toList();
 
     notifyListeners();
+  }
+
+  Stats _calculateStats(Participant _) {
+    return Stats(
+        debt: Monetary(unit: 1, cent: 2),
+        moneySpent: Monetary(unit: 2, cent: 3),
+        lastPaymentDate: DateTime.now(),
+        numberOfPayments: 4);
   }
 }

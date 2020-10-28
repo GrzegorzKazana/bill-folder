@@ -10,6 +10,7 @@ import 'ui/expense_list/index.dart';
 import 'ui/participant_list/add_participant_dialog.dart';
 import 'ui/expense_list/add_payment_dialog.dart';
 
+import './models/Participant.dart';
 import './state/bank_overview_state.dart';
 
 class BakOverviewPage extends StatefulWidget {
@@ -50,11 +51,18 @@ class _BankOverviewPageState extends State<BakOverviewPage>
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
-            body: TabBarView(controller: _tabController, children: [
-              BankOverviewTabContent(
-                  tabName: _tabs[0], child: ParticipantSummaryList()),
-              BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
-            ]),
+            body: Builder(builder: (context) {
+              final participants =
+                  context.select<BankOverviewState, List<ParticipantWithStats>>(
+                      (s) => s.participantsWithStats);
+
+              return TabBarView(controller: _tabController, children: [
+                BankOverviewTabContent(
+                    tabName: _tabs[0],
+                    child: ParticipantSummaryList(participants: participants)),
+                BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
+              ]);
+            }),
           ),
           drawer: Drawer(
             child: BankOverviewDrawer(),

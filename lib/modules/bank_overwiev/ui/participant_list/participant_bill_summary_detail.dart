@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../models/Participant.dart';
+
 class ParticipantBillSummaryDetail extends StatelessWidget {
+  final ParticipantWithStats participant;
+
+  ParticipantBillSummaryDetail({@required this.participant});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +27,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          '123\$',
+                          '${participant.stats.moneySpent}Z',
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
@@ -36,7 +42,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          '8',
+                          '${participant.stats.numberOfPayments}',
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
@@ -52,7 +58,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         )),
                         Text(
-                          '25-10-2020',
+                          participant.stats.lastPaymentDate.toString(),
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
