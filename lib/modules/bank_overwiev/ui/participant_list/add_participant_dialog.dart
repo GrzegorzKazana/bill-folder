@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import './participant_form/index.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 import 'package:bill_folder/common/utils/get_random_color.dart';
+
+import './participant_form/index.dart';
+import '../../models/Participant.dart';
 
 class AddParticipantDialog extends StatefulWidget {
   @override
@@ -12,6 +14,13 @@ class AddParticipantDialog extends StatefulWidget {
 class _AddParticipantDialogState extends State<AddParticipantDialog> {
   String _name = '';
   Color _avatarColor = getRandomColor();
+
+  void _submit() {
+    if (!participantFormKey.currentState.validate()) return;
+
+    final data = Participant(name: _name, avatarColor: _avatarColor);
+    Navigator.of(context).pop(data);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +38,7 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
           child: Text('Cancel', style: TextStyle(fontSize: 16)),
         ),
         TextButton(
-            onPressed: () {
-              if (participantFormKey.currentState.validate())
-                Navigator.of(context).pop();
-            },
+            onPressed: _submit,
             child: Text('Add', style: TextStyle(fontSize: 16))),
       ],
     );

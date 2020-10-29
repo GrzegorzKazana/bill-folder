@@ -39,11 +39,28 @@ class _BankOverviewPageState extends State<BakOverviewPage>
   }
 
   Future<void> _showAddParticipantDialog(BuildContext context) async {
-    showDialog<String>(context: context, child: AddParticipantDialog());
+    final participant = await showDialog<Participant>(
+        context: context, child: AddParticipantDialog());
+
+    if (participant == null) return;
+
+    Provider.of<BankOverviewState>(context, listen: false)
+        .addParticipant(participant);
   }
 
   Future<void> _showAddPaymentDialog(BuildContext context) async {
-    showDialog(context: context, child: AddPaymentDialog());
+    final state = Provider.of<BankOverviewState>(context, listen: false);
+
+    final expense = await showDialog(
+        context: context,
+        child: AddPaymentDialog(
+          walletCurrency: state.currentWalletCurrency,
+          participants: state.participants,
+        ));
+
+    if (expense == null) return;
+
+    state.addExpense(expense);
   }
 
   @override
@@ -82,10 +99,11 @@ class _BankOverviewPageState extends State<BakOverviewPage>
           drawer: Drawer(
             child: BankOverviewDrawer(),
           ),
-          floatingActionButton: BankOverviewFAB(
-            onAddParticipant: () => _showAddParticipantDialog(context),
-            onAddExpense: () => _showAddPaymentDialog(context),
-          ),
+          floatingActionButton: Builder(
+              builder: (context) => BankOverviewFAB(
+                    onAddParticipant: () => _showAddParticipantDialog(context),
+                    onAddExpense: () => _showAddPaymentDialog(context),
+                  )),
         ));
   }
 }

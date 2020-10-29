@@ -14,7 +14,6 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(walletCurrency);
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: Column(

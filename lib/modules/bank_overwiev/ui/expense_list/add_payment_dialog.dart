@@ -1,35 +1,60 @@
 import 'package:flutter/material.dart';
 
-import './payment_form/index.dart';
 import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/custom_dialog.dart';
 
+import './payment_form/index.dart';
+import '../../models/Expense.dart';
+import '../../models/ExpenseTag.dart';
+import '../../models/Participant.dart';
+import '../../models/Currency.dart';
+
 class AddPaymentDialog extends StatefulWidget {
   final String title;
+  final Currency walletCurrency;
+  final List<Participant> participants;
 
-  AddPaymentDialog({this.title});
+  AddPaymentDialog({
+    this.title,
+    @required this.participants,
+    @required this.walletCurrency,
+  });
 
   @override
   State<StatefulWidget> createState() => _AddPaymentDialogState();
 }
 
 class _AddPaymentDialogState extends State<AddPaymentDialog> {
-  List<String> selectedTags = [];
+  List<ExpenseTag> selectedTags = [];
   Monetary price;
   DateTime paymentDate = DateTime.now();
-  String payer;
+  Participant payer;
+
+  String get _title => widget.title ?? 'Add payment';
+  Currency get _currency => widget.walletCurrency;
+  List<Participant> get _participants => widget.participants;
+
+  void _submit() {
+    if (!paymentFormKey.currentState.validate()) return;
+
+    final data = Expense(
+        payerId: payer.id, price: price, date: paymentDate, tags: selectedTags);
+
+    Navigator.of(context).pop(data);
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
-      title: widget.title ?? 'Add payment',
+      title: _title,
       child: PaymentForm(
+        walletCurrency: _currency,
         selectedTags: selectedTags,
         onSelectedTagsChanged: (tags) => setState(() => selectedTags = tags),
         price: price,
         onPriceChanged: (priceVal) => setState(() => price = priceVal),
         payer: payer,
-        possiblePayers: ['You', 'Me'],
+        possiblePayers: _participants,
         onPayerChanged: (payerVal) => setState(() => payer = payerVal),
         paymentDate: paymentDate,
         onPaymentDateChanged: (date) => setState(() => paymentDate = date),
@@ -42,10 +67,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
           child: Text('Cancel', style: TextStyle(fontSize: 16)),
         ),
         TextButton(
-            onPressed: () {
-              if (paymentFormKey.currentState.validate())
-                Navigator.of(context).pop();
-            },
+            onPressed: _submit,
             child: Text('Add', style: TextStyle(fontSize: 16))),
       ],
     );

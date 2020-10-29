@@ -40,7 +40,12 @@ class _ExpenseListState extends State<ExpenseList> {
 
   Future<void> _showEditExpenseEditForm(BuildContext context) async {
     showDialog(
-        context: context, child: AddPaymentDialog(title: 'Edit payment'));
+        context: context,
+        child: AddPaymentDialog(
+          title: 'Edit payment',
+          walletCurrency: _walletCurrency,
+          participants: _participants,
+        ));
   }
 
   Participant _getParticipantById(String id, List<Participant> participants) {

@@ -1,3 +1,5 @@
+import 'package:bill_folder/common/utils/enum_from_string.dart';
+
 enum ExpenseTag {
   STUFF,
   SHOPPING,
@@ -9,7 +11,7 @@ enum ExpenseTag {
   WATER
 }
 
-String expenseTagToString(ExpenseTag tag) {
+String formatExpenseTag(ExpenseTag tag) {
   switch (tag) {
     case ExpenseTag.STUFF:
       return 'Stuff';
@@ -38,3 +40,10 @@ String expenseTagToString(ExpenseTag tag) {
 
   return '';
 }
+
+String formatExpenseTagValue(String value) {
+  return formatExpenseTag(stringToExpenseTag(value));
+}
+
+final expenseTagToString = createEnumToString(ExpenseTag.values);
+final stringToExpenseTag = createEnumFromString(ExpenseTag.values);

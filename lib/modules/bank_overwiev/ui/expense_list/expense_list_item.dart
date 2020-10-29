@@ -24,7 +24,7 @@ class ExpenseListItem extends StatelessWidget {
   String get _price => expense.price.toString();
   String get _currency => formatCurrency(walletCurrency);
   String get _paymentDate => formatDate(expense.date);
-  String get _expenseTags => expense.tags.map(expenseTagToString).join(', ');
+  String get _expenseTags => expense.tags.map(formatExpenseTag).join(', ');
 
   @override
   Widget build(BuildContext context) {
