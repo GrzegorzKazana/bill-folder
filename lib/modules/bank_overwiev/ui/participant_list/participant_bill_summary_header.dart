@@ -9,11 +9,17 @@ class ParticipantBillSummaryHeader extends StatelessWidget {
   final bool isExpanded;
   final ParticipantWithStats participant;
   final Currency walletCurrency;
+  final void Function(BuildContext, {Participant initialPayer})
+      showAddPaymentWithPayer;
+
+  String get _debtText =>
+      '${participant.stats.debt.toString()}${formatCurrency(walletCurrency)}';
 
   ParticipantBillSummaryHeader(
       {@required this.isExpanded,
       @required this.participant,
-      @required this.walletCurrency});
+      @required this.walletCurrency,
+      @required this.showAddPaymentWithPayer});
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +33,15 @@ class ParticipantBillSummaryHeader extends StatelessWidget {
               child: Text(participant.info.name,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headline5)),
-          Text(
-              '${participant.stats.debt.toString()}${formatCurrency(walletCurrency)}',
-              style: TextStyle(fontSize: 24, color: Colors.red))
+          Text(_debtText, style: TextStyle(fontSize: 24, color: Colors.red))
         ]),
         contentPadding: EdgeInsets.only(left: 16),
         trailing: !isExpanded
             ? IconButton(
                 icon: Icon(Icons.add),
                 tooltip: "Add payment",
-                onPressed: () {
-                  print("Pressed add payment butotn");
-                },
+                onPressed: () => showAddPaymentWithPayer(context,
+                    initialPayer: participant.info),
               )
             : null);
   }

@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'add_payment_dialog.dart';
@@ -8,6 +9,7 @@ import 'expense_list_filter_header.dart';
 import '../../models/Expense.dart';
 import '../../models/Participant.dart';
 import '../../models/Currency.dart';
+import '../../state/bank_overview_state.dart';
 
 class ExpenseList extends StatefulWidget {
   final List<Expense> expenses;
@@ -31,21 +33,35 @@ class _ExpenseListState extends State<ExpenseList> {
   List<Participant> get _participants => widget.participants;
   Currency get _walletCurrency => widget.walletCurrency;
 
-  Future<void> _showConfirmDeleteDialog(BuildContext context) async {
+  Future<void> _showConfirmDeleteDialog(
+      BuildContext context, String expenseId) async {
     final shouldDelete = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         child: ExpenseDeleteConfirmDialog());
+
+    if (!shouldDelete) return;
+
+    Provider.of<BankOverviewState>(context, listen: false)
+        .removeExpense(expenseId);
   }
 
-  Future<void> _showEditExpenseEditForm(BuildContext context) async {
-    showDialog(
+  Future<void> _showEditExpenseEditForm(BuildContext context,
+      Participant initialPayer, Expense initialExpense) async {
+    final data = await showDialog<Expense>(
         context: context,
         child: AddPaymentDialog(
           title: 'Edit payment',
           walletCurrency: _walletCurrency,
           participants: _participants,
+          initialPayer: initialPayer,
+          initialExpense: initialExpense,
         ));
+
+    if (data == null) return;
+
+    Provider.of<BankOverviewState>(context, listen: false)
+        .updateExpense(initialExpense.id, data);
   }
 
   Participant _getParticipantById(String id, List<Participant> participants) {
@@ -77,15 +93,22 @@ class _ExpenseListState extends State<ExpenseList> {
           padding: EdgeInsets.all(0),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          children: filteredExpenses
-              .map((expense) => ExpenseListItem(
-                    expense: expense,
-                    walletCurrency: _walletCurrency,
-                    payer: _getParticipantById(expense.payerId, _participants),
-                    onEditPayment: () => _showEditExpenseEditForm(context),
-                    onConfirmDelete: () => _showConfirmDeleteDialog(context),
-                  ))
-              .toList(),
+          children: filteredExpenses.map((expense) {
+            final payer = _getParticipantById(expense.payerId, _participants);
+
+            return ExpenseListItem(
+              expense: expense,
+              walletCurrency: _walletCurrency,
+              payer: payer,
+              onEditPayment: () => _showEditExpenseEditForm(
+                context,
+                payer,
+                expense,
+              ),
+              onConfirmDelete: () =>
+                  _showConfirmDeleteDialog(context, expense.id),
+            );
+          }).toList(),
         )
       ],
     );

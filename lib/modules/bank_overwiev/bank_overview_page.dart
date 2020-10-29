@@ -48,15 +48,16 @@ class _BankOverviewPageState extends State<BakOverviewPage>
         .addParticipant(participant);
   }
 
-  Future<void> _showAddPaymentDialog(BuildContext context) async {
+  Future<void> _showAddPaymentDialog(BuildContext context,
+      {Participant initialPayer}) async {
     final state = Provider.of<BankOverviewState>(context, listen: false);
 
     final expense = await showDialog(
         context: context,
         child: AddPaymentDialog(
-          walletCurrency: state.currentWalletCurrency,
-          participants: state.participants,
-        ));
+            walletCurrency: state.currentWalletCurrency,
+            participants: state.participants,
+            initialPayer: initialPayer));
 
     if (expense == null) return;
 
@@ -85,7 +86,10 @@ class _BankOverviewPageState extends State<BakOverviewPage>
                 BankOverviewTabContent(
                     tabName: _tabs[0],
                     child: ParticipantSummaryList(
-                        walletCurrency: currency, participants: participants)),
+                      walletCurrency: currency,
+                      participants: participants,
+                      showAddPaymentWithPayer: _showAddPaymentDialog,
+                    )),
                 BankOverviewTabContent(
                     tabName: _tabs[1],
                     child: ExpenseList(

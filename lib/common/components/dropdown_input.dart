@@ -5,12 +5,14 @@ class DropdownInput extends StatelessWidget {
   final List<String> possibleValues;
   final void Function(String) onValueChanged;
   final String Function(String) valueFormatter;
+  final void Function() onTap;
 
   DropdownInput(
       {@required this.value,
       @required this.possibleValues,
       @required this.onValueChanged,
-      this.valueFormatter});
+      this.valueFormatter,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class DropdownInput extends StatelessWidget {
         validator: (val) =>
             val == null || val.isEmpty ? 'Payer must be specified' : null,
         onChanged: onValueChanged,
+        onTap: onTap,
         items: possibleValues
             .map((value) => DropdownMenuItem<String>(
                 value: value,

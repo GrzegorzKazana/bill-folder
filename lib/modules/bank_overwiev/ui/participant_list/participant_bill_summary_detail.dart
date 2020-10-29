@@ -8,9 +8,13 @@ import '../../models/Currency.dart';
 class ParticipantBillSummaryDetail extends StatelessWidget {
   final ParticipantWithStats participant;
   final Currency walletCurrency;
+  final void Function(BuildContext, {Participant initialPayer})
+      showAddPaymentWithPayer;
 
   ParticipantBillSummaryDetail(
-      {@required this.participant, @required this.walletCurrency});
+      {@required this.participant,
+      @required this.walletCurrency,
+      @required this.showAddPaymentWithPayer});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,8 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                         onPressed: () {},
                         child: Text("VIEW", style: TextStyle(fontSize: 16))),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () => showAddPaymentWithPayer(context,
+                            initialPayer: participant.info),
                         child: Text("ADD", style: TextStyle(fontSize: 16)))
                   ],
                 ))

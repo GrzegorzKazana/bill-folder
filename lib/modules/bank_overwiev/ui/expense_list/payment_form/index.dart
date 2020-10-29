@@ -85,6 +85,7 @@ class PaymentForm extends StatelessWidget {
               label: 'Payer:',
               input: DropdownInput(
                 value: payer?.id,
+                onTap: FocusScope.of(context).unfocus,
                 onValueChanged: (id) =>
                     onPayerChanged(_getParticipantById(id, possiblePayers)),
                 possibleValues: possiblePayers.map((p) => p.id).toList(),

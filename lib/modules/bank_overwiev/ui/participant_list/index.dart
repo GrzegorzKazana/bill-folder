@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'participant_bill_summary_header.dart';
 import 'participant_bill_summary_detail.dart';
 
-import 'add_participant_dialog.dart';
-
 import '../../models/Participant.dart';
 import '../../models/Currency.dart';
 
 class ParticipantSummaryList extends StatefulWidget {
   final List<ParticipantWithStats> participants;
   final Currency walletCurrency;
+  final void Function(BuildContext, {Participant initialPayer})
+      showAddPaymentWithPayer;
 
   ParticipantSummaryList(
-      {@required this.participants, @required this.walletCurrency});
+      {@required this.participants,
+      @required this.walletCurrency,
+      @required this.showAddPaymentWithPayer});
 
   @override
   State<StatefulWidget> createState() => _ParticipantSummaryListState();
@@ -45,11 +47,12 @@ class _ParticipantSummaryListState extends State<ParticipantSummaryList> {
                     walletCurrency: widget.walletCurrency,
                     isExpanded: isExpanded,
                     participant: participant,
+                    showAddPaymentWithPayer: widget.showAddPaymentWithPayer,
                   ),
                   body: ParticipantBillSummaryDetail(
-                    walletCurrency: widget.walletCurrency,
-                    participant: participant,
-                  ),
+                      walletCurrency: widget.walletCurrency,
+                      participant: participant,
+                      showAddPaymentWithPayer: widget.showAddPaymentWithPayer),
                 ))
             .toList());
   }

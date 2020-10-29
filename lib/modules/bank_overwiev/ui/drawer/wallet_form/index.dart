@@ -38,6 +38,7 @@ class WalletForm extends StatelessWidget {
                   possibleValues:
                       possibleCurrencies.map(currencyToString).toList(),
                   valueFormatter: formatCurrencyValue,
+                  onTap: FocusScope.of(context).unfocus,
                   onValueChanged: (val) =>
                       onCurrencyChange(stringToCurrency(val)))),
         ],

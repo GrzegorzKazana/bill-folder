@@ -55,6 +55,11 @@ class BankOverviewState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeExpense(String expenseId) {
+    _expenses = _expenses.where((e) => e.id != expenseId).toList();
+    notifyListeners();
+  }
+
   void addParticipant(Participant participant) {
     _participants.add(participant);
     notifyListeners();

@@ -14,10 +14,15 @@ class AddPaymentDialog extends StatefulWidget {
   final Currency walletCurrency;
   final List<Participant> participants;
 
+  final Participant initialPayer;
+  final Expense initialExpense;
+
   AddPaymentDialog({
     this.title,
     @required this.participants,
     @required this.walletCurrency,
+    this.initialPayer,
+    this.initialExpense,
   });
 
   @override
@@ -33,6 +38,17 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
   String get _title => widget.title ?? 'Add payment';
   Currency get _currency => widget.walletCurrency;
   List<Participant> get _participants => widget.participants;
+
+  @override
+  void initState() {
+    super.initState();
+    payer = widget.initialPayer;
+    if (widget.initialExpense != null) {
+      selectedTags = widget.initialExpense.tags;
+      price = widget.initialExpense.price;
+      paymentDate = widget.initialExpense.date;
+    }
+  }
 
   void _submit() {
     if (!paymentFormKey.currentState.validate()) return;

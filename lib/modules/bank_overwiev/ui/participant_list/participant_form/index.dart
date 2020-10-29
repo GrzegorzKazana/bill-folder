@@ -21,6 +21,8 @@ class ParticipantForm extends StatelessWidget {
       this.onColorChange});
 
   void _showColorPicker(BuildContext context) {
+    FocusScope.of(context).unfocus();
+
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
