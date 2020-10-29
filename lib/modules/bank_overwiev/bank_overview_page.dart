@@ -11,6 +11,7 @@ import 'ui/participant_list/add_participant_dialog.dart';
 import 'ui/expense_list/add_payment_dialog.dart';
 
 import './models/Participant.dart';
+import './models/Currency.dart';
 import './state/bank_overview_state.dart';
 
 class BakOverviewPage extends StatefulWidget {
@@ -56,10 +57,14 @@ class _BankOverviewPageState extends State<BakOverviewPage>
                   context.select<BankOverviewState, List<ParticipantWithStats>>(
                       (s) => s.participantsWithStats);
 
+              final currency = context.select<BankOverviewState, Currency>(
+                  (s) => s.currentWalletCurrency);
+
               return TabBarView(controller: _tabController, children: [
                 BankOverviewTabContent(
                     tabName: _tabs[0],
-                    child: ParticipantSummaryList(participants: participants)),
+                    child: ParticipantSummaryList(
+                        walletCurrency: currency, participants: participants)),
                 BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
               ]);
             }),

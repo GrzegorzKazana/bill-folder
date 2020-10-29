@@ -4,11 +4,14 @@ import 'participant_bill_summary_header.dart';
 import 'participant_bill_summary_detail.dart';
 
 import '../../models/Participant.dart';
+import '../../models/Currency.dart';
 
 class ParticipantSummaryList extends StatefulWidget {
   final List<ParticipantWithStats> participants;
+  final Currency walletCurrency;
 
-  ParticipantSummaryList({@required this.participants});
+  ParticipantSummaryList(
+      {@required this.participants, @required this.walletCurrency});
 
   @override
   State<StatefulWidget> createState() => _ParticipantSummaryListState();
@@ -37,10 +40,12 @@ class _ParticipantSummaryListState extends State<ParticipantSummaryList> {
                   canTapOnHeader: true,
                   headerBuilder: (BuildContext context, bool isExpanded) =>
                       ParticipantBillSummaryHeader(
+                    walletCurrency: widget.walletCurrency,
                     isExpanded: isExpanded,
                     participant: participant,
                   ),
                   body: ParticipantBillSummaryDetail(
+                    walletCurrency: widget.walletCurrency,
                     participant: participant,
                   ),
                 ))

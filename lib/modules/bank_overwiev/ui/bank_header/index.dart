@@ -7,6 +7,7 @@ import 'bank_summary_bar.dart';
 import 'bank_app_bar.dart';
 import 'bank_tab_header.dart';
 
+import '../../models/Currency.dart';
 import '../../state/bank_overview_state.dart';
 
 typedef List<Widget> HeaderSliverBuilder(
@@ -25,6 +26,9 @@ HeaderSliverBuilder createHeaderBuilder(
     final numberOfParticipants =
         context.select<BankOverviewState, int>((s) => s.numberOfParticipants);
 
+    final currency = context
+        .select<BankOverviewState, Currency>((s) => s.currentWalletCurrency);
+
     return [
       SliverOverlapAbsorber(
         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
@@ -35,6 +39,7 @@ HeaderSliverBuilder createHeaderBuilder(
       SliverPersistentHeader(
         pinned: true,
         delegate: BankSummaryBarDelegate(
+          walletCurrency: currency,
           costOfWallet: walletCost,
           numberOfParticipants: numberOfParticipants,
         ),

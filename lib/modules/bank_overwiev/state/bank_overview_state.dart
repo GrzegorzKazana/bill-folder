@@ -6,14 +6,19 @@ import 'package:bill_folder/common/models/monetary.dart';
 import '../models/Wallet.dart';
 import '../models/Expense.dart';
 import '../models/Participant.dart';
+import '../models/Currency.dart';
+
+import '_mocks.dart';
 
 class BankOverviewState extends ChangeNotifier {
-  Wallet _currentWallet;
-  List<Wallet> _wallets = [];
-  List<Expense> _expenses = [];
-  List<Participant> _participants = [];
+  Wallet _currentWallet = mockWallets[1];
+  List<Wallet> _wallets = mockWallets;
+  List<Expense> _expenses = mockExpenses;
+  List<Participant> _participants = mockParticipants;
 
   Wallet get currentWallet => _currentWallet;
+  Currency get currentWalletCurrency =>
+      _currentWallet?.currency ?? Currency.POUND;
   UnmodifiableListView<Wallet> get wallets => UnmodifiableListView(_wallets);
   UnmodifiableListView<Expense> get expenses => UnmodifiableListView(_expenses);
   UnmodifiableListView<Participant> get participants =>
@@ -64,10 +69,6 @@ class BankOverviewState extends ChangeNotifier {
   }
 
   Stats _calculateStats(Participant _) {
-    return Stats(
-        debt: Monetary(unit: 1, cent: 2),
-        moneySpent: Monetary(unit: 2, cent: 3),
-        lastPaymentDate: DateTime.now(),
-        numberOfPayments: 4);
+    return randomStats();
   }
 }

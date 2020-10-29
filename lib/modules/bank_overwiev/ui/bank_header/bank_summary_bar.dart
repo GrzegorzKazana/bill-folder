@@ -2,13 +2,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:bill_folder/common/models/monetary.dart';
+import '../../models/Currency.dart';
 
 class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
+  final Currency walletCurrency;
   final Monetary costOfWallet;
   final int numberOfParticipants;
 
   BankSummaryBarDelegate(
-      {@required this.costOfWallet, @required this.numberOfParticipants});
+      {@required this.costOfWallet,
+      @required this.numberOfParticipants,
+      @required this.walletCurrency});
 
   @override
   Widget build(
@@ -19,7 +23,7 @@ class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
 
       final leftLabel = [
         TextSpan(
-            text: costOfWallet.toString(),
+            text: '${costOfWallet.toString()}${formatCurrency(walletCurrency)}',
             style: TextStyle(
               fontSize: 32,
               color: Colors.white,

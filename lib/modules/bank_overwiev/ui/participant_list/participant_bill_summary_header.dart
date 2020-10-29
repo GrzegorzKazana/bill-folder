@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:bill_folder/common/components/avatar.dart';
 
 import '../../models/Participant.dart';
+import '../../models/Currency.dart';
 
 class ParticipantBillSummaryHeader extends StatelessWidget {
   final bool isExpanded;
   final ParticipantWithStats participant;
+  final Currency walletCurrency;
 
   ParticipantBillSummaryHeader(
-      {@required this.isExpanded, @required this.participant});
+      {@required this.isExpanded,
+      @required this.participant,
+      @required this.walletCurrency});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,8 @@ class ParticipantBillSummaryHeader extends StatelessWidget {
               child: Text(participant.info.name,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headline5)),
-          Text('${participant.stats.debt.toString()}Z',
+          Text(
+              '${participant.stats.debt.toString()}${formatCurrency(walletCurrency)}',
               style: TextStyle(fontSize: 24, color: Colors.red))
         ]),
         contentPadding: EdgeInsets.only(left: 16),

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:bill_folder/common/utils/format_date.dart';
+
 import '../../models/Participant.dart';
+import '../../models/Currency.dart';
 
 class ParticipantBillSummaryDetail extends StatelessWidget {
   final ParticipantWithStats participant;
+  final Currency walletCurrency;
 
-  ParticipantBillSummaryDetail({@required this.participant});
+  ParticipantBillSummaryDetail(
+      {@required this.participant, @required this.walletCurrency});
 
   @override
   Widget build(BuildContext context) {
+    print(walletCurrency);
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: Column(
@@ -27,7 +33,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          '${participant.stats.moneySpent}Z',
+                          '${participant.stats.moneySpent}${formatCurrency(walletCurrency)}',
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
@@ -58,7 +64,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         )),
                         Text(
-                          participant.stats.lastPaymentDate.toString(),
+                          formatDate(participant.stats.lastPaymentDate),
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
