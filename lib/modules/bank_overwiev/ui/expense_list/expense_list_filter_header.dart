@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 import './expense_list_filter_button.dart';
+import '../../models/Participant.dart';
 
 class ExpenseListFilterHeader extends StatelessWidget {
-  final List<String> expenses;
-  final List<String> filteredExpenses;
+  final int numberOfAllExpenses;
+  final int numberOfFilteredExpenses;
 
-  final String dropdownValue;
-  final List<String> dropdownOptions;
-  final void Function(String) onDropdownValueChange;
+  final Participant selectedParticipant;
+  final List<Participant> allParticipants;
+  final void Function(Participant) onParticipantChange;
 
   ExpenseListFilterHeader({
-    @required this.expenses,
-    @required this.filteredExpenses,
-    @required this.dropdownValue,
-    @required this.dropdownOptions,
-    @required this.onDropdownValueChange,
+    @required this.numberOfFilteredExpenses,
+    @required this.numberOfAllExpenses,
+    @required this.selectedParticipant,
+    @required this.allParticipants,
+    @required this.onParticipantChange,
   });
 
   @override
@@ -28,15 +29,15 @@ class ExpenseListFilterHeader extends StatelessWidget {
             Container(
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
-                  '${filteredExpenses.length} out of ${expenses.length}',
+                  '$numberOfFilteredExpenses out of $numberOfAllExpenses',
                   style: TextStyle(fontSize: 20),
                 )),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: ExpenseListFilterButton(
-                value: dropdownValue,
-                options: dropdownOptions,
-                onValueChange: onDropdownValueChange,
+                selectedParticipant: selectedParticipant,
+                allParticipants: allParticipants,
+                onParticipantChange: onParticipantChange,
               ),
             )
           ],

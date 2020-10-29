@@ -12,6 +12,7 @@ import 'ui/expense_list/add_payment_dialog.dart';
 
 import './models/Participant.dart';
 import './models/Currency.dart';
+import './models/Expense.dart';
 import './state/bank_overview_state.dart';
 
 class BakOverviewPage extends StatefulWidget {
@@ -57,6 +58,9 @@ class _BankOverviewPageState extends State<BakOverviewPage>
                   context.select<BankOverviewState, List<ParticipantWithStats>>(
                       (s) => s.participantsWithStats);
 
+              final expenses = context
+                  .select<BankOverviewState, List<Expense>>((s) => s.expenses);
+
               final currency = context.select<BankOverviewState, Currency>(
                   (s) => s.currentWalletCurrency);
 
@@ -65,7 +69,13 @@ class _BankOverviewPageState extends State<BakOverviewPage>
                     tabName: _tabs[0],
                     child: ParticipantSummaryList(
                         walletCurrency: currency, participants: participants)),
-                BankOverviewTabContent(tabName: _tabs[1], child: ExpenseList())
+                BankOverviewTabContent(
+                    tabName: _tabs[1],
+                    child: ExpenseList(
+                      expenses: expenses,
+                      walletCurrency: currency,
+                      participants: participants.map((p) => p.info).toList(),
+                    ))
               ]);
             }),
           ),

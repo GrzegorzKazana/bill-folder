@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'participant_bill_summary_header.dart';
 import 'participant_bill_summary_detail.dart';
 
+import 'add_participant_dialog.dart';
+
 import '../../models/Participant.dart';
 import '../../models/Currency.dart';
 

@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 
-class ExpenseListFilterButton extends StatelessWidget {
-  final String value;
-  final List<String> options;
-  final void Function(String) onValueChange;
+import '../../models/Participant.dart';
 
-  ExpenseListFilterButton(
-      {@required this.value,
-      @required this.options,
-      @required this.onValueChange});
+class ExpenseListFilterButton extends StatelessWidget {
+  final Participant selectedParticipant;
+  final List<Participant> allParticipants;
+  final void Function(Participant) onParticipantChange;
+
+  ExpenseListFilterButton({
+    @required this.selectedParticipant,
+    @required this.allParticipants,
+    @required this.onParticipantChange,
+  });
+
+  Participant _getParticipantById(String id, List<Participant> participants) {
+    return participants.firstWhere((p) => p.id == id, orElse: () => null);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return DropdownButton(
         icon: Icon(Icons.filter_list_alt),
         iconSize: 32,
         style: TextStyle(fontSize: 24, color: Colors.black),
-        value: value,
-        onChanged: onValueChange,
+        value: selectedParticipant?.id,
+        onChanged: (id) =>
+            onParticipantChange(_getParticipantById(id, allParticipants)),
         items: [
           DropdownMenuItem<String>(value: null, child: Text("All")),
-          ...options
-              .map((value) =>
-                  DropdownMenuItem<String>(value: value, child: Text(value)))
+          ...allParticipants
+              .map((participant) => DropdownMenuItem<String>(
+                  value: participant.id, child: Text(participant.name)))
               .toList()
         ]);
   }

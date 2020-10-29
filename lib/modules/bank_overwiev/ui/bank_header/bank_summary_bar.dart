@@ -14,6 +14,9 @@ class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
       @required this.numberOfParticipants,
       @required this.walletCurrency});
 
+  String get _fullCost =>
+      '${costOfWallet.toString()}${formatCurrency(walletCurrency)}';
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -23,7 +26,7 @@ class BankSummaryBarDelegate extends SliverPersistentHeaderDelegate {
 
       final leftLabel = [
         TextSpan(
-            text: '${costOfWallet.toString()}${formatCurrency(walletCurrency)}',
+            text: _fullCost,
             style: TextStyle(
               fontSize: 32,
               color: Colors.white,

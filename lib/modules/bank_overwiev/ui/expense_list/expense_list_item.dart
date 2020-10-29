@@ -1,15 +1,30 @@
+import 'package:bill_folder/common/utils/format_date.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/Expense.dart';
+import '../../models/ExpenseTag.dart';
+import '../../models/Currency.dart';
+import '../../models/Participant.dart';
+
 class ExpenseListItem extends StatelessWidget {
-  final String expense;
+  final Expense expense;
+  final Currency walletCurrency;
+  final Participant payer;
   final VoidCallback onConfirmDelete;
   final VoidCallback onEditPayment;
 
   ExpenseListItem({
     @required this.expense,
+    @required this.walletCurrency,
+    @required this.payer,
     @required this.onConfirmDelete,
     @required this.onEditPayment,
   });
+
+  String get _price => expense.price.toString();
+  String get _currency => formatCurrency(walletCurrency);
+  String get _paymentDate => formatDate(expense.date);
+  String get _expenseTags => expense.tags.map(expenseTagToString).join(', ');
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +41,10 @@ class ExpenseListItem extends StatelessWidget {
                           child: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: '22',
+                              text: _price,
                               style: Theme.of(context).textTheme.headline1),
                           TextSpan(
-                              text: 'PLN',
+                              text: _currency,
                               style: Theme.of(context).textTheme.headline3),
                         ]),
                       ))),
@@ -41,13 +56,13 @@ class ExpenseListItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Grzegorz K',
+                            Text(payer.name,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.headline5),
-                            Text('26-10-2020',
+                            Text(_paymentDate,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.headline6),
-                            Text('shopping, stuff, tickets',
+                            Text(_expenseTags,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.subtitle1)
                           ])),
