@@ -18,13 +18,13 @@ class Participant {
 
 @immutable
 class Stats {
-  final Monetary debt;
+  final Monetary balance;
   final Monetary moneySpent;
   final DateTime lastPaymentDate;
   final int numberOfPayments;
 
   Stats(
-      {@required this.debt,
+      {@required this.balance,
       @required this.moneySpent,
       @required this.lastPaymentDate,
       @required this.numberOfPayments});

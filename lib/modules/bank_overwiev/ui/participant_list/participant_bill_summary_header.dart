@@ -13,7 +13,9 @@ class ParticipantBillSummaryHeader extends StatelessWidget {
   String get _name => participant.info.name;
   Color get _color => participant.info.avatarColor;
   String get _debtText =>
-      '${participant.stats.debt.toString()}${formatCurrency(walletCurrency)}';
+      '${participant.stats.balance.toString()}${formatCurrency(walletCurrency)}';
+  Color get _balanceColor =>
+      participant.stats.balance.toCents() < 0 ? Colors.red : Colors.green;
 
   ParticipantBillSummaryHeader({
     @required this.isExpanded,
@@ -33,7 +35,7 @@ class ParticipantBillSummaryHeader extends StatelessWidget {
             child: Text(_name,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headline5)),
-        Text(_debtText, style: TextStyle(fontSize: 24, color: Colors.red))
+        Text(_debtText, style: TextStyle(fontSize: 24, color: _balanceColor))
       ]),
       contentPadding: EdgeInsets.only(left: 16),
     );

@@ -14,6 +14,7 @@ import './models/Participant.dart';
 import './models/Currency.dart';
 import './models/Expense.dart';
 import './state/bank_overview_state.dart';
+import './services/expense_stats.dart';
 
 class BakOverviewPage extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _BankOverviewPageState extends State<BakOverviewPage>
   @override
   Widget build(BuildContext context) {
     return ListenableProvider(
-        create: (_) => BankOverviewState(),
+        create: (_) => BankOverviewState(ExpenseStatsService()),
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),

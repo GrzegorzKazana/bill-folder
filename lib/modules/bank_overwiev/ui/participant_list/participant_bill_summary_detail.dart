@@ -12,6 +12,13 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
       showAddPaymentWithPayer;
   final void Function(Participant) navigateToFilteredExpenseList;
 
+  String get _moneySpent =>
+      '${participant.stats.moneySpent}${formatCurrency(walletCurrency)}';
+  String get _numberOfPayments => '${participant.stats.numberOfPayments}';
+  String get _lastPayment => participant.stats.lastPaymentDate != null
+      ? formatDate(participant.stats.lastPaymentDate)
+      : '---';
+
   ParticipantBillSummaryDetail(
       {@required this.participant,
       @required this.walletCurrency,
@@ -38,7 +45,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          '${participant.stats.moneySpent}${formatCurrency(walletCurrency)}',
+                          _moneySpent,
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
@@ -53,7 +60,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          '${participant.stats.numberOfPayments}',
+                          _numberOfPayments,
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],
@@ -69,7 +76,7 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         )),
                         Text(
-                          formatDate(participant.stats.lastPaymentDate),
+                          _lastPayment,
                           style: Theme.of(context).textTheme.headline6,
                         )
                       ],

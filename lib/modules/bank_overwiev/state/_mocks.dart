@@ -38,7 +38,7 @@ Participant randomParticipant(List<Participant> participants) {
 
 Stats randomStats() {
   return Stats(
-      debt: randomMonetary(),
+      balance: randomMonetary(),
       moneySpent: randomMonetary(),
       lastPaymentDate: randomReasonableDate(),
       numberOfPayments: rnd.nextInt(10));

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bill_folder/common/models/monetary.dart';
 
+import '../services/expense_stats.dart';
 import '../models/Wallet.dart';
 import '../models/Expense.dart';
 import '../models/Participant.dart';
@@ -11,25 +12,34 @@ import '../models/Currency.dart';
 import '_mocks.dart';
 
 class BankOverviewState extends ChangeNotifier {
+  final ExpenseStatsService _statsService;
+  BankOverviewState(this._statsService);
+
   Wallet _currentWallet = mockWallets[1];
   List<Wallet> _wallets = mockWallets;
   List<Expense> _expenses = mockExpenses;
   List<Participant> _participants = mockParticipants;
 
   Wallet get currentWallet => _currentWallet;
+
   Currency get currentWalletCurrency =>
-      _currentWallet?.currency ?? Currency.POUND;
+      _currentWallet?.currency ?? Currency.DOLLAR;
+
   UnmodifiableListView<Wallet> get wallets => UnmodifiableListView(_wallets);
+
   UnmodifiableListView<Expense> get expenses => UnmodifiableListView(_expenses);
+
   UnmodifiableListView<Participant> get participants =>
       UnmodifiableListView(_participants);
-  UnmodifiableListView<ParticipantWithStats> get participantsWithStats =>
-      UnmodifiableListView(_participants
-          .map((participant) => ParticipantWithStats(
-              info: participant, stats: _calculateStats(participant)))
-          .toList());
 
-  Monetary get totalCostOfCurrentWallet => Monetary(unit: 42, cent: 14);
+  UnmodifiableListView<ParticipantWithStats> get participantsWithStats =>
+      UnmodifiableListView(
+          _statsService.calculateStats(_expenses, _participants));
+
+  Monetary get totalCostOfCurrentWallet => _currentWallet != null
+      ? _statsService.sumExpenses(_expenses)
+      : Monetary(unit: 0, cent: 0);
+
   int get numberOfParticipants => _participants.length;
 
   void addWallet(Wallet wallet) {
@@ -71,9 +81,5 @@ class BankOverviewState extends ChangeNotifier {
         .toList();
 
     notifyListeners();
-  }
-
-  Stats _calculateStats(Participant _) {
-    return randomStats();
   }
 }
