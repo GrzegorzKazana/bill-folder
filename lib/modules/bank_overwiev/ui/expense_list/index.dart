@@ -1,6 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:bill_folder/common/utils/immutable_sort.dart';
+
 import 'add_payment_dialog.dart';
 import 'expense_delete_confirm_dialog.dart';
 import 'expense_list_item.dart';
@@ -11,27 +13,20 @@ import '../../models/Participant.dart';
 import '../../models/Currency.dart';
 import '../../state/bank_overview_state.dart';
 
-class ExpenseList extends StatefulWidget {
+class ExpenseList extends StatelessWidget {
   final List<Expense> expenses;
   final List<Participant> participants;
+  final Participant selectedParticipant;
   final Currency walletCurrency;
+  final void Function(Participant) onSelectedParticipantChange;
 
   ExpenseList({
     @required this.expenses,
     @required this.participants,
     @required this.walletCurrency,
+    @required this.selectedParticipant,
+    @required this.onSelectedParticipantChange,
   });
-
-  @override
-  State<StatefulWidget> createState() => _ExpenseListState();
-}
-
-class _ExpenseListState extends State<ExpenseList> {
-  Participant _selectedParticipant;
-
-  List<Expense> get _expenses => widget.expenses;
-  List<Participant> get _participants => widget.participants;
-  Currency get _walletCurrency => widget.walletCurrency;
 
   Future<void> _showConfirmDeleteDialog(
       BuildContext context, String expenseId) async {
@@ -52,8 +47,8 @@ class _ExpenseListState extends State<ExpenseList> {
         context: context,
         child: AddPaymentDialog(
           title: 'Edit payment',
-          walletCurrency: _walletCurrency,
-          participants: _participants,
+          walletCurrency: walletCurrency,
+          participants: participants,
           initialPayer: initialPayer,
           initialExpense: initialExpense,
         ));
@@ -75,30 +70,35 @@ class _ExpenseListState extends State<ExpenseList> {
         : expenses;
   }
 
+  List<Expense> _sortExpensesByDate(List<Expense> expenses) {
+    return sort(expenses, (a, b) => a.date.isBefore(b.date));
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredExpenses =
-        _getFilteredExpenses(_selectedParticipant, _expenses);
+        _getFilteredExpenses(selectedParticipant, expenses);
+
+    final sortedExpenses = _sortExpensesByDate(filteredExpenses);
 
     return Column(
       children: [
         ExpenseListFilterHeader(
-            numberOfAllExpenses: _expenses.length,
-            numberOfFilteredExpenses: filteredExpenses.length,
-            selectedParticipant: _selectedParticipant,
-            allParticipants: _participants,
-            onParticipantChange: (val) =>
-                setState(() => _selectedParticipant = val)),
+            numberOfAllExpenses: expenses.length,
+            numberOfFilteredExpenses: sortedExpenses.length,
+            selectedParticipant: selectedParticipant,
+            allParticipants: participants,
+            onParticipantChange: onSelectedParticipantChange),
         ListView(
           padding: EdgeInsets.all(0),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          children: filteredExpenses.map((expense) {
-            final payer = _getParticipantById(expense.payerId, _participants);
+          children: sortedExpenses.map((expense) {
+            final payer = _getParticipantById(expense.payerId, participants);
 
             return ExpenseListItem(
               expense: expense,
-              walletCurrency: _walletCurrency,
+              walletCurrency: walletCurrency,
               payer: payer,
               onEditPayment: () => _showEditExpenseEditForm(
                 context,

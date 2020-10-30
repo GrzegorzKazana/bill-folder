@@ -15,6 +15,10 @@ DateTime randomReasonableDate() {
   return DateTime.now().subtract(Duration(days: rnd.nextInt(1000)));
 }
 
+Color randomColor() {
+  return Color((rnd.nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+}
+
 Monetary randomMonetary() {
   return Monetary(unit: rnd.nextInt(99), cent: rnd.nextInt(99));
 }
@@ -46,11 +50,11 @@ final mockWallets = [
 ];
 
 final mockParticipants = [
-  Participant(name: 'John Doe', avatarColor: Colors.amber),
-  Participant(name: 'Jan Kowalski', avatarColor: Colors.blue),
-  Participant(name: 'Karen Smith', avatarColor: Colors.pink),
-  Participant(name: 'Liam Williams', avatarColor: Colors.yellow),
-  Participant(name: 'Alice Jones', avatarColor: Colors.red),
+  Participant(name: 'John Doe', avatarColor: randomColor()),
+  Participant(name: 'Jan Kowalski', avatarColor: randomColor()),
+  Participant(name: 'Karen Smith', avatarColor: randomColor()),
+  Participant(name: 'Liam Williams', avatarColor: randomColor()),
+  Participant(name: 'Alice Jones', avatarColor: randomColor()),
 ];
 
 final mockExpenses = List.generate(

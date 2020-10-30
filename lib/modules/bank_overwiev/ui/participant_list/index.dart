@@ -11,11 +11,13 @@ class ParticipantSummaryList extends StatefulWidget {
   final Currency walletCurrency;
   final void Function(BuildContext, {Participant initialPayer})
       showAddPaymentWithPayer;
+  final void Function(Participant) navigateToFilteredExpenseList;
 
   ParticipantSummaryList(
       {@required this.participants,
       @required this.walletCurrency,
-      @required this.showAddPaymentWithPayer});
+      @required this.showAddPaymentWithPayer,
+      @required this.navigateToFilteredExpenseList});
 
   @override
   State<StatefulWidget> createState() => _ParticipantSummaryListState();
@@ -47,12 +49,14 @@ class _ParticipantSummaryListState extends State<ParticipantSummaryList> {
                     walletCurrency: widget.walletCurrency,
                     isExpanded: isExpanded,
                     participant: participant,
-                    showAddPaymentWithPayer: widget.showAddPaymentWithPayer,
                   ),
                   body: ParticipantBillSummaryDetail(
-                      walletCurrency: widget.walletCurrency,
-                      participant: participant,
-                      showAddPaymentWithPayer: widget.showAddPaymentWithPayer),
+                    walletCurrency: widget.walletCurrency,
+                    participant: participant,
+                    showAddPaymentWithPayer: widget.showAddPaymentWithPayer,
+                    navigateToFilteredExpenseList:
+                        widget.navigateToFilteredExpenseList,
+                  ),
                 ))
             .toList());
   }

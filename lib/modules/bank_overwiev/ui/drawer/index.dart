@@ -51,7 +51,7 @@ class BankOverviewDrawer extends StatelessWidget {
     return ListView(
       children: [
         DrawerHeader(
-          decoration: BoxDecoration(color: Colors.orange),
+          decoration: BoxDecoration(color: Theme.of(context).primaryColor),
           child: Text("Bill folder",
               style: TextStyle(color: Colors.white, fontSize: 32)),
         ),

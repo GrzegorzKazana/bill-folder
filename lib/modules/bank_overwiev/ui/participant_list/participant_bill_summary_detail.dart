@@ -10,11 +10,13 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
   final Currency walletCurrency;
   final void Function(BuildContext, {Participant initialPayer})
       showAddPaymentWithPayer;
+  final void Function(Participant) navigateToFilteredExpenseList;
 
   ParticipantBillSummaryDetail(
       {@required this.participant,
       @required this.walletCurrency,
-      @required this.showAddPaymentWithPayer});
+      @required this.showAddPaymentWithPayer,
+      @required this.navigateToFilteredExpenseList});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,8 @@ class ParticipantBillSummaryDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            navigateToFilteredExpenseList(participant.info),
                         child: Text("VIEW", style: TextStyle(fontSize: 16))),
                     TextButton(
                         onPressed: () => showAddPaymentWithPayer(context,

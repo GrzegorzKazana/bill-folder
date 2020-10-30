@@ -23,7 +23,7 @@ class BakOverviewPage extends StatefulWidget {
 class _BankOverviewPageState extends State<BakOverviewPage>
     with SingleTickerProviderStateMixin {
   final _tabs = ["Participants", "Expenses"];
-
+  Participant _selectedParticipant;
   TabController _tabController;
 
   @override
@@ -36,6 +36,14 @@ class _BankOverviewPageState extends State<BakOverviewPage>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _navigateToFilteredExpenseList(Participant participant) {
+    setState(() => _selectedParticipant = participant);
+
+    // navigate after state is set and component is rebuilt
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _tabController.animateTo(1));
   }
 
   Future<void> _showAddParticipantDialog(BuildContext context) async {
@@ -89,14 +97,18 @@ class _BankOverviewPageState extends State<BakOverviewPage>
                       walletCurrency: currency,
                       participants: participants,
                       showAddPaymentWithPayer: _showAddPaymentDialog,
+                      navigateToFilteredExpenseList:
+                          _navigateToFilteredExpenseList,
                     )),
                 BankOverviewTabContent(
                     tabName: _tabs[1],
                     child: ExpenseList(
-                      expenses: expenses,
-                      walletCurrency: currency,
-                      participants: participants.map((p) => p.info).toList(),
-                    ))
+                        expenses: expenses,
+                        walletCurrency: currency,
+                        participants: participants.map((p) => p.info).toList(),
+                        selectedParticipant: _selectedParticipant,
+                        onSelectedParticipantChange: (val) =>
+                            setState(() => _selectedParticipant = val)))
               ]);
             }),
           ),
