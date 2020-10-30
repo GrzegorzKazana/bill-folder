@@ -16,6 +16,8 @@ class AsyncState<T> extends ChangeNotifier {
   T get data => _data;
   Error get error => _error;
 
+  AsyncState([this._data]);
+
   void initFetch() {
     _status = AsyncStatus.PENDING;
     _error = null;

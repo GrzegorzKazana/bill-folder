@@ -11,7 +11,7 @@ import 'expense_list_filter_header.dart';
 import '../../models/Expense.dart';
 import '../../models/Participant.dart';
 import '../../models/Currency.dart';
-import '../../state/bank_overview_state.dart';
+import '../../state/detail_state.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> expenses;
@@ -37,7 +37,7 @@ class ExpenseList extends StatelessWidget {
 
     if (!shouldDelete) return;
 
-    Provider.of<BankOverviewState>(context, listen: false)
+    Provider.of<WalletDetailState>(context, listen: false)
         .removeExpense(expenseId);
   }
 
@@ -55,7 +55,7 @@ class ExpenseList extends StatelessWidget {
 
     if (data == null) return;
 
-    Provider.of<BankOverviewState>(context, listen: false)
+    Provider.of<WalletDetailState>(context, listen: false)
         .updateExpense(initialExpense.id, data);
   }
 
@@ -76,6 +76,7 @@ class ExpenseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('selectedParticipant: ${selectedParticipant?.name}');
     final filteredExpenses =
         _getFilteredExpenses(selectedParticipant, expenses);
 
@@ -89,27 +90,30 @@ class ExpenseList extends StatelessWidget {
             selectedParticipant: selectedParticipant,
             allParticipants: participants,
             onParticipantChange: onSelectedParticipantChange),
-        ListView(
-          padding: EdgeInsets.all(0),
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: sortedExpenses.map((expense) {
-            final payer = _getParticipantById(expense.payerId, participants);
+        Container(
+            color: Colors.white,
+            child: ListView(
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: sortedExpenses.map((expense) {
+                final payer =
+                    _getParticipantById(expense.payerId, participants);
 
-            return ExpenseListItem(
-              expense: expense,
-              walletCurrency: walletCurrency,
-              payer: payer,
-              onEditPayment: () => _showEditExpenseEditForm(
-                context,
-                payer,
-                expense,
-              ),
-              onConfirmDelete: () =>
-                  _showConfirmDeleteDialog(context, expense.id),
-            );
-          }).toList(),
-        )
+                return ExpenseListItem(
+                  expense: expense,
+                  walletCurrency: walletCurrency,
+                  payer: payer,
+                  onEditPayment: () => _showEditExpenseEditForm(
+                    context,
+                    payer,
+                    expense,
+                  ),
+                  onConfirmDelete: () =>
+                      _showConfirmDeleteDialog(context, expense.id),
+                );
+              }).toList(),
+            ))
       ],
     );
   }

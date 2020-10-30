@@ -10,17 +10,25 @@ import '_mocks.dart';
 class WalletState extends AsyncState<List<Wallet>> {
   Wallet _currentWallet;
 
+  WalletState() : super([]);
+
   Wallet get currentWallet => _currentWallet;
   UnmodifiableListView<Wallet> get wallets => UnmodifiableListView(data);
   Currency get currentWalletCurrency => _currentWallet?.currency;
 
-  void loadWallets() {
+  Future<bool> loadWallets() {
     initFetch();
-    Future.value(mockWallets).then(dataLoaded).catchError(requestError);
+
+    return Future.value(mockWallets).then((wallets) {
+      _currentWallet = wallets.isNotEmpty ? wallets.first : null;
+      dataLoaded(wallets);
+
+      return wallets.isNotEmpty;
+    }).catchError(requestError);
   }
 
   void changeCurrentWallet(String walletId) {
-    if (_currentWallet.id == walletId) return;
+    if (_currentWallet != null && _currentWallet.id == walletId) return;
 
     final wallet =
         data.firstWhere((wallet) => wallet.id == walletId, orElse: () => null);
@@ -29,5 +37,10 @@ class WalletState extends AsyncState<List<Wallet>> {
 
     _currentWallet = wallet;
     notifyListeners();
+  }
+
+  void addWallet(Wallet wallet) {
+    _currentWallet = wallet;
+    setData([...data, wallet]);
   }
 }

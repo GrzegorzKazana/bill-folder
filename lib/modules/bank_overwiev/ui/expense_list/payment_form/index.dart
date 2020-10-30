@@ -96,6 +96,7 @@ class PaymentForm extends StatelessWidget {
             LabeledFormFieldContainer(
               label: 'Price:',
               input: PriceInput(
+                initalValue: price?.toString(),
                 onPriceChanged: onPriceChanged,
               ),
               postfix: Text(formatCurrency(walletCurrency).padRight(2),

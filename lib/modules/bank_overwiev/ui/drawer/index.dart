@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import './add_wallet_dialog.dart';
 import '../../models/Wallet.dart';
-import '../../state/bank_overview_state.dart';
+import '../../state/wallet_state.dart';
 
 class BankOverviewDrawer extends StatelessWidget {
   Future<void> _showCreateWallet(BuildContext context) async {
@@ -12,8 +12,7 @@ class BankOverviewDrawer extends StatelessWidget {
 
     if (maybeWallet != null) {
       Navigator.of(context).pop();
-      Provider.of<BankOverviewState>(context, listen: false)
-          .addWallet(maybeWallet);
+      Provider.of<WalletState>(context, listen: false).addWallet(maybeWallet);
     }
   }
 
@@ -34,13 +33,13 @@ class BankOverviewDrawer extends StatelessWidget {
 
   void _handleTapOnWallet(BuildContext context, Wallet wallet) {
     Navigator.of(context).pop();
-    Provider.of<BankOverviewState>(context, listen: false)
-        .switchToWallet(wallet.id);
+    Provider.of<WalletState>(context, listen: false)
+        .changeCurrentWallet(wallet.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<BankOverviewState>();
+    final state = context.watch<WalletState>();
     final currentWallet = state.currentWallet;
     final wallets = state.wallets.map((wallet) => _buildDrawerListItem(
         icon: Icons.monetization_on,

@@ -20,18 +20,21 @@ class WalletDetailState extends AsyncState<WalletDetails> {
       ? _statsService.sumExpenses(data.expenses)
       : Monetary(unit: 0, cent: 0);
 
-  UnmodifiableListView<Expense> get expenses =>
-      data != null ? UnmodifiableListView(data.expenses) : [];
-  UnmodifiableListView<Participant> get participants =>
-      data != null ? UnmodifiableListView(data.participants) : [];
+  UnmodifiableListView<Expense> get expenses => data != null
+      ? UnmodifiableListView(data.expenses)
+      : UnmodifiableListView([]);
+  UnmodifiableListView<Participant> get participants => data != null
+      ? UnmodifiableListView(data.participants)
+      : UnmodifiableListView([]);
   UnmodifiableListView<ParticipantWithStats> get participantsWithStats =>
       data != null
           ? UnmodifiableListView(
               _statsService.calculateStats(data.expenses, data.participants))
-          : [];
+          : UnmodifiableListView([]);
 
   void loadDetails(String walletId) {
     if (_currentWalletId == walletId) return;
+    _currentWalletId = walletId;
 
     initFetch();
     Future.value(WalletDetails(
@@ -41,18 +44,18 @@ class WalletDetailState extends AsyncState<WalletDetails> {
   }
 
   void addExpense(Expense expense) {
-    setData(data.addExpense(expense));
+    setData(data?.addExpense(expense));
   }
 
   void removeExpense(String expenseId) {
-    setData(data.removeExpense(expenseId));
+    setData(data?.removeExpense(expenseId));
   }
 
   void updateExpense(String expenseId, Expense expense) {
-    setData(data.updateExpense(expenseId, expense));
+    setData(data?.updateExpense(expenseId, expense));
   }
 
   void addParticipant(Participant participant) {
-    setData(data.addParticipant(participant));
+    setData(data?.addParticipant(participant));
   }
 }

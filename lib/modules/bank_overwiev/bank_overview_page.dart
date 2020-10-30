@@ -13,7 +13,6 @@ import 'ui/expense_list/add_payment_dialog.dart';
 import './models/Participant.dart';
 import './models/Currency.dart';
 import './models/Expense.dart';
-import './state/bank_overview_state.dart';
 import './state/detail_state.dart';
 import './state/wallet_state.dart';
 import './services/expense_stats.dart';
@@ -55,53 +54,51 @@ class _BankOverviewPageState extends State<BakOverviewPage>
 
     if (participant == null) return;
 
-    Provider.of<BankOverviewState>(context, listen: false)
+    Provider.of<WalletDetailState>(context, listen: false)
         .addParticipant(participant);
   }
 
   Future<void> _showAddPaymentDialog(BuildContext context,
       {Participant initialPayer}) async {
-    final state = Provider.of<BankOverviewState>(context, listen: false);
+    final wallet = Provider.of<WalletState>(context, listen: false);
+    final detail = Provider.of<WalletDetailState>(context, listen: false);
 
     final expense = await showDialog(
         context: context,
         child: AddPaymentDialog(
-            walletCurrency: state.currentWalletCurrency,
-            participants: state.participants,
+            walletCurrency: wallet.currentWalletCurrency,
+            participants: detail.participants,
             initialPayer: initialPayer));
 
     if (expense == null) return;
 
-    state.addExpense(expense);
+    detail.addExpense(expense);
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        // create: (_) => BankOverviewState(ExpenseStatsService()),
         providers: [
-          ChangeNotifierProvider<BankOverviewState>(
-              create: (_) => BankOverviewState(ExpenseStatsService())),
-          ChangeNotifierProvider<WalletState>(create: (_) => WalletState()),
-          ChangeNotifierProxyProvider<BankOverviewState, WalletDetailState>(
+          ChangeNotifierProvider<WalletState>(
+              create: (_) => WalletState()..loadWallets()),
+          ChangeNotifierProxyProvider<WalletState, WalletDetailState>(
               create: (_) => WalletDetailState(ExpenseStatsService()),
-              update: (_, bank, wallet) =>
-                  wallet..loadDetails(bank.currentWallet.id))
+              update: (_, wallet, detail) => wallet.currentWallet != null
+                  ? (detail..loadDetails(wallet.currentWallet.id))
+                  : detail)
         ],
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
             body: Builder(builder: (context) {
-              print(context.watch<WalletDetailState>());
-
               final participants =
-                  context.select<BankOverviewState, List<ParticipantWithStats>>(
+                  context.select<WalletDetailState, List<ParticipantWithStats>>(
                       (s) => s.participantsWithStats);
 
               final expenses = context
-                  .select<BankOverviewState, List<Expense>>((s) => s.expenses);
+                  .select<WalletDetailState, List<Expense>>((s) => s.expenses);
 
-              final currency = context.select<BankOverviewState, Currency>(
+              final currency = context.select<WalletState, Currency>(
                   (s) => s.currentWalletCurrency);
 
               return TabBarView(controller: _tabController, children: [
