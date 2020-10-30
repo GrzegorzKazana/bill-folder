@@ -14,6 +14,8 @@ import './models/Participant.dart';
 import './models/Currency.dart';
 import './models/Expense.dart';
 import './state/bank_overview_state.dart';
+import './state/detail_state.dart';
+import './state/wallet_state.dart';
 import './services/expense_stats.dart';
 
 class BakOverviewPage extends StatefulWidget {
@@ -75,12 +77,23 @@ class _BankOverviewPageState extends State<BakOverviewPage>
 
   @override
   Widget build(BuildContext context) {
-    return ListenableProvider(
-        create: (_) => BankOverviewState(ExpenseStatsService()),
+    return MultiProvider(
+        // create: (_) => BankOverviewState(ExpenseStatsService()),
+        providers: [
+          ChangeNotifierProvider<BankOverviewState>(
+              create: (_) => BankOverviewState(ExpenseStatsService())),
+          ChangeNotifierProvider<WalletState>(create: (_) => WalletState()),
+          ChangeNotifierProxyProvider<BankOverviewState, WalletDetailState>(
+              create: (_) => WalletDetailState(ExpenseStatsService()),
+              update: (_, bank, wallet) =>
+                  wallet..loadDetails(bank.currentWallet.id))
+        ],
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
             body: Builder(builder: (context) {
+              print(context.watch<WalletDetailState>());
+
               final participants =
                   context.select<BankOverviewState, List<ParticipantWithStats>>(
                       (s) => s.participantsWithStats);
