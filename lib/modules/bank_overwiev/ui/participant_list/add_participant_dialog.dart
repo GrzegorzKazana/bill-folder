@@ -7,6 +7,10 @@ import './participant_form/index.dart';
 import '../../models/Participant.dart';
 
 class AddParticipantDialog extends StatefulWidget {
+  final String walletId;
+
+  AddParticipantDialog({@required this.walletId});
+
   @override
   State<StatefulWidget> createState() => _AddParticipantDialogState();
 }
@@ -18,7 +22,8 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
   void _submit() {
     if (!participantFormKey.currentState.validate()) return;
 
-    final data = Participant(name: _name, avatarColor: _avatarColor);
+    final data = Participant(
+        name: _name, avatarColor: _avatarColor, walletId: widget.walletId);
     Navigator.of(context).pop(data);
   }
 

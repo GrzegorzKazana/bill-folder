@@ -32,7 +32,8 @@ void main() {
     });
 
     test('it calculates stats correctly for single participant', () {
-      final participant = Participant(name: 'test', avatarColor: Colors.red);
+      final participant =
+          Participant(name: 'test', avatarColor: Colors.red, walletId: '1');
       final otherParticipantId = '111';
       final someOtherParticipantId = '222';
       final expenses = [

@@ -13,6 +13,12 @@ class Expense {
   final DateTime date;
   final List<ExpenseTag> tags;
 
+  static final String idField = '_id';
+  static final String payerIdField = 'payerId';
+  static final String priceField = 'price';
+  static final String dateField = 'date';
+  static final String tagsField = 'tags';
+
   Expense(
       {@required this.payerId,
       @required this.price,
@@ -20,6 +26,23 @@ class Expense {
       @required this.tags,
       String id})
       : id = id ?? nanoid();
+
+  Expense.fromMap(Map<String, dynamic> data)
+      : id = data[idField],
+        payerId = data[payerIdField],
+        price = Monetary.fromString(data[priceField]),
+        date = DateTime.parse(data[dateField]),
+        tags = data[tagsField].split(',').map(stringToExpenseTag).toList();
+
+  Map<String, dynamic> toMap() {
+    return {
+      idField: id,
+      payerIdField: payerId,
+      priceField: price.toString(),
+      dateField: date.toIso8601String(),
+      'tags': tags.map(expenseTagToString).toList().join(','),
+    };
+  }
 
   Expense copyWith(
       {String payerId, Monetary price, DateTime date, List<ExpenseTag> tags}) {

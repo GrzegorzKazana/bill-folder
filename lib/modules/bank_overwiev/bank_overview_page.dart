@@ -49,8 +49,11 @@ class _BankOverviewPageState extends State<BakOverviewPage>
   }
 
   Future<void> _showAddParticipantDialog(BuildContext context) async {
+    final wallet = Provider.of<WalletState>(context, listen: false);
+
     final participant = await showDialog<Participant>(
-        context: context, child: AddParticipantDialog());
+        context: context,
+        child: AddParticipantDialog(walletId: wallet.currentWalletId));
 
     if (participant == null) return;
 

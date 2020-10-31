@@ -13,6 +13,7 @@ class WalletState extends AsyncState<List<Wallet>> {
   WalletState() : super([]);
 
   Wallet get currentWallet => _currentWallet;
+  String get currentWalletId => _currentWallet?.id;
   UnmodifiableListView<Wallet> get wallets => UnmodifiableListView(data);
   Currency get currentWalletCurrency => _currentWallet?.currency;
 

@@ -36,6 +36,10 @@ Participant randomParticipant(List<Participant> participants) {
   return participants[rnd.nextInt(participants.length - 1)];
 }
 
+Wallet randomWallet(List<Wallet> wallets) {
+  return wallets[rnd.nextInt(wallets.length - 1)];
+}
+
 Stats randomStats() {
   return Stats(
       balance: randomMonetary(),
@@ -50,11 +54,26 @@ final mockWallets = [
 ];
 
 final mockParticipants = [
-  Participant(name: 'John Doe', avatarColor: randomColor()),
-  Participant(name: 'Jan Kowalski', avatarColor: randomColor()),
-  Participant(name: 'Karen Smith', avatarColor: randomColor()),
-  Participant(name: 'Liam Williams', avatarColor: randomColor()),
-  Participant(name: 'Alice Jones', avatarColor: randomColor()),
+  Participant(
+      name: 'John Doe',
+      avatarColor: randomColor(),
+      walletId: randomWallet(mockWallets).id),
+  Participant(
+      name: 'Jan Kowalski',
+      avatarColor: randomColor(),
+      walletId: randomWallet(mockWallets).id),
+  Participant(
+      name: 'Karen Smith',
+      avatarColor: randomColor(),
+      walletId: randomWallet(mockWallets).id),
+  Participant(
+      name: 'Liam Williams',
+      avatarColor: randomColor(),
+      walletId: randomWallet(mockWallets).id),
+  Participant(
+      name: 'Alice Jones',
+      avatarColor: randomColor(),
+      walletId: randomWallet(mockWallets).id),
 ];
 
 final mockExpenses = List.generate(
