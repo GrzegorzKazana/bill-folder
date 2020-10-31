@@ -91,12 +91,15 @@ class _BankSummaryLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: height,
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          RichText(
-              text: TextSpan(
+          FittedBox(
+              child: RichText(
+                  text: TextSpan(
             children: children,
-          ))
+          )))
         ]));
   }
 }

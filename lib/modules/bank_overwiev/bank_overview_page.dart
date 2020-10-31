@@ -79,40 +79,44 @@ class _BankOverviewPageState extends State<BakOverviewPage>
 
   @override
   Widget build(BuildContext context) {
+    final participants =
+        context.select<WalletDetailState, List<ParticipantWithStats>>(
+            (s) => s.participantsWithStats);
+
+    final expenses =
+        context.select<WalletDetailState, List<Expense>>((s) => s.expenses);
+
+    final currency =
+        context.select<WalletState, Currency>((s) => s.currentWalletCurrency);
+
+    // selectedParticipant may no longer be in list of all participants
+    // after navigating between different wallets
+    if (!participants.any((p) => p.info.id == _selectedParticipant?.id)) {
+      setState(() => _selectedParticipant = null);
+    }
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
-        body: Builder(builder: (context) {
-          final participants =
-              context.select<WalletDetailState, List<ParticipantWithStats>>(
-                  (s) => s.participantsWithStats);
-
-          final expenses = context
-              .select<WalletDetailState, List<Expense>>((s) => s.expenses);
-
-          final currency = context
-              .select<WalletState, Currency>((s) => s.currentWalletCurrency);
-
-          return TabBarView(controller: _tabController, children: [
-            BankOverviewTabContent(
-                tabName: _tabs[0],
-                child: ParticipantSummaryList(
+        body: TabBarView(controller: _tabController, children: [
+          BankOverviewTabContent(
+              tabName: _tabs[0],
+              child: ParticipantSummaryList(
+                walletCurrency: currency,
+                participants: participants,
+                showAddPaymentWithPayer: _showAddPaymentDialog,
+                navigateToFilteredExpenseList: _navigateToFilteredExpenseList,
+              )),
+          BankOverviewTabContent(
+              tabName: _tabs[1],
+              child: ExpenseList(
+                  expenses: expenses,
                   walletCurrency: currency,
-                  participants: participants,
-                  showAddPaymentWithPayer: _showAddPaymentDialog,
-                  navigateToFilteredExpenseList: _navigateToFilteredExpenseList,
-                )),
-            BankOverviewTabContent(
-                tabName: _tabs[1],
-                child: ExpenseList(
-                    expenses: expenses,
-                    walletCurrency: currency,
-                    participants: participants.map((p) => p.info).toList(),
-                    selectedParticipant: _selectedParticipant,
-                    onSelectedParticipantChange: (val) =>
-                        setState(() => _selectedParticipant = val)))
-          ]);
-        }),
+                  participants: participants.map((p) => p.info).toList(),
+                  selectedParticipant: _selectedParticipant,
+                  onSelectedParticipantChange: (val) =>
+                      setState(() => _selectedParticipant = val)))
+        ]),
       ),
       drawer: Drawer(
         child: BankOverviewDrawer(),
