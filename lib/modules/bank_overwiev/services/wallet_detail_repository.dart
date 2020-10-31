@@ -30,7 +30,7 @@ class WalletDetailRepository {
     return expenseRepo.insert(expense);
   }
 
-  Future<Expense> update(Expense expense) {
+  Future<Expense> updateExpense(Expense expense) {
     return expenseRepo.update(expense);
   }
 

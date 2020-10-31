@@ -24,10 +24,11 @@ class AsyncState<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  void dataLoaded(T data) {
+  T dataLoaded(T data) {
     _status = AsyncStatus.LOADED;
     _data = data;
     notifyListeners();
+    return data;
   }
 
   void requestError(Object error) {

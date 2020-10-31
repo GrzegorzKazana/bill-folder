@@ -34,7 +34,7 @@ class BankOverviewDrawer extends StatelessWidget {
   void _handleTapOnWallet(BuildContext context, Wallet wallet) {
     Navigator.of(context).pop();
     Provider.of<WalletState>(context, listen: false)
-        .changeCurrentWallet(wallet.id);
+        .changeCurrentWallet(wallet);
   }
 
   @override

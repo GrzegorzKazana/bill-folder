@@ -15,7 +15,6 @@ import './models/Currency.dart';
 import './models/Expense.dart';
 import './state/detail_state.dart';
 import './state/wallet_state.dart';
-import './services/expense_stats.dart';
 
 class BakOverviewPage extends StatefulWidget {
   @override
@@ -80,60 +79,49 @@ class _BankOverviewPageState extends State<BakOverviewPage>
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<WalletState>(
-              create: (_) => WalletState()..loadWallets()),
-          ChangeNotifierProxyProvider<WalletState, WalletDetailState>(
-              create: (_) => WalletDetailState(ExpenseStatsService()),
-              update: (_, wallet, detail) => wallet.currentWallet != null
-                  ? (detail..loadDetails(wallet.currentWallet.id))
-                  : detail)
-        ],
-        child: Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
-            body: Builder(builder: (context) {
-              final participants =
-                  context.select<WalletDetailState, List<ParticipantWithStats>>(
-                      (s) => s.participantsWithStats);
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: createHeaderBuilder(_tabController, _tabs),
+        body: Builder(builder: (context) {
+          final participants =
+              context.select<WalletDetailState, List<ParticipantWithStats>>(
+                  (s) => s.participantsWithStats);
 
-              final expenses = context
-                  .select<WalletDetailState, List<Expense>>((s) => s.expenses);
+          final expenses = context
+              .select<WalletDetailState, List<Expense>>((s) => s.expenses);
 
-              final currency = context.select<WalletState, Currency>(
-                  (s) => s.currentWalletCurrency);
+          final currency = context
+              .select<WalletState, Currency>((s) => s.currentWalletCurrency);
 
-              return TabBarView(controller: _tabController, children: [
-                BankOverviewTabContent(
-                    tabName: _tabs[0],
-                    child: ParticipantSummaryList(
-                      walletCurrency: currency,
-                      participants: participants,
-                      showAddPaymentWithPayer: _showAddPaymentDialog,
-                      navigateToFilteredExpenseList:
-                          _navigateToFilteredExpenseList,
-                    )),
-                BankOverviewTabContent(
-                    tabName: _tabs[1],
-                    child: ExpenseList(
-                        expenses: expenses,
-                        walletCurrency: currency,
-                        participants: participants.map((p) => p.info).toList(),
-                        selectedParticipant: _selectedParticipant,
-                        onSelectedParticipantChange: (val) =>
-                            setState(() => _selectedParticipant = val)))
-              ]);
-            }),
-          ),
-          drawer: Drawer(
-            child: BankOverviewDrawer(),
-          ),
-          floatingActionButton: Builder(
-              builder: (context) => BankOverviewFAB(
-                    onAddParticipant: () => _showAddParticipantDialog(context),
-                    onAddExpense: () => _showAddPaymentDialog(context),
-                  )),
-        ));
+          return TabBarView(controller: _tabController, children: [
+            BankOverviewTabContent(
+                tabName: _tabs[0],
+                child: ParticipantSummaryList(
+                  walletCurrency: currency,
+                  participants: participants,
+                  showAddPaymentWithPayer: _showAddPaymentDialog,
+                  navigateToFilteredExpenseList: _navigateToFilteredExpenseList,
+                )),
+            BankOverviewTabContent(
+                tabName: _tabs[1],
+                child: ExpenseList(
+                    expenses: expenses,
+                    walletCurrency: currency,
+                    participants: participants.map((p) => p.info).toList(),
+                    selectedParticipant: _selectedParticipant,
+                    onSelectedParticipantChange: (val) =>
+                        setState(() => _selectedParticipant = val)))
+          ]);
+        }),
+      ),
+      drawer: Drawer(
+        child: BankOverviewDrawer(),
+      ),
+      floatingActionButton: Builder(
+          builder: (context) => BankOverviewFAB(
+                onAddParticipant: () => _showAddParticipantDialog(context),
+                onAddExpense: () => _showAddPaymentDialog(context),
+              )),
+    );
   }
 }

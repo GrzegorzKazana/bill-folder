@@ -4,17 +4,18 @@ import 'package:bill_folder/common/state/async_state.dart';
 import 'package:bill_folder/common/models/monetary.dart';
 
 import '../services/expense_stats.dart';
+import '../services/wallet_detail_repository.dart';
 import '../models/WalletDetails.dart';
 import '../models/Expense.dart';
 import '../models/Participant.dart';
 
-import '_mocks.dart';
-
 class WalletDetailState extends AsyncState<WalletDetails> {
-  String _currentWalletId;
-
+  final WalletDetailRepository repo;
   final ExpenseStatsService _statsService;
-  WalletDetailState(this._statsService) : super(WalletDetails.empty());
+  WalletDetailState(this._statsService, this.repo)
+      : super(WalletDetails.empty());
+
+  String _currentWalletId;
 
   int get numberOfParticipants => data.participants.length;
   Monetary get totalCost => _statsService.sumExpenses(data.expenses);
@@ -32,25 +33,31 @@ class WalletDetailState extends AsyncState<WalletDetails> {
     _currentWalletId = walletId;
 
     initFetch();
-    Future.value(WalletDetails(
-            expenses: mockExpenses, participants: mockParticipants))
-        .then(dataLoaded)
-        .catchError(requestError);
+
+    repo.getByWalletId(walletId).then(dataLoaded).catchError(requestError);
   }
 
   void addExpense(Expense expense) {
-    setData(data.addExpense(expense));
+    repo.insertExpense(expense).then((_) {
+      setData(data.addExpense(expense));
+    }).catchError(requestError);
   }
 
   void removeExpense(String expenseId) {
-    setData(data.removeExpense(expenseId));
+    repo.deleteExpense(expenseId).then((_) {
+      setData(data.removeExpense(expenseId));
+    }).catchError(requestError);
   }
 
   void updateExpense(String expenseId, Expense expense) {
-    setData(data.updateExpense(expenseId, expense));
+    repo.updateExpense(expense).then((_) {
+      setData(data.updateExpense(expenseId, expense));
+    }).catchError(requestError);
   }
 
   void addParticipant(Participant participant) {
-    setData(data.addParticipant(participant));
+    repo.insertParticipant(participant).then((_) {
+      setData(data.addParticipant(participant));
+    }).catchError(requestError);
   }
 }
