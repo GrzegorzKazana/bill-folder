@@ -12,6 +12,8 @@ import 'modules/bank_overwiev/services/participant_repository.dart';
 import 'modules/bank_overwiev/services/wallet_detail_repository.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final db = await openDatabase('bill_folder.db', version: 1,
       onCreate: (db, ver) async {
     await db.execute(WalletRepository.init);

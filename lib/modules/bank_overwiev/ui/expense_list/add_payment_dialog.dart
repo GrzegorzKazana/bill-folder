@@ -35,6 +35,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
   DateTime paymentDate = DateTime.now();
   Participant payer;
 
+  String get _initalExpenseId => widget?.initialExpense?.id;
   String get _title => widget.title ?? 'Add payment';
   Currency get _currency => widget.walletCurrency;
   List<Participant> get _participants => widget.participants;
@@ -54,7 +55,11 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
     if (!paymentFormKey.currentState.validate()) return;
 
     final data = Expense(
-        payerId: payer.id, price: price, date: paymentDate, tags: selectedTags);
+        id: _initalExpenseId,
+        payerId: payer.id,
+        price: price,
+        date: paymentDate,
+        tags: selectedTags);
 
     Navigator.of(context).pop(data);
   }

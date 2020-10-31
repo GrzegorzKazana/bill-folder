@@ -76,7 +76,6 @@ class ExpenseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('selectedParticipant: ${selectedParticipant?.name}');
     final filteredExpenses =
         _getFilteredExpenses(selectedParticipant, expenses);
 

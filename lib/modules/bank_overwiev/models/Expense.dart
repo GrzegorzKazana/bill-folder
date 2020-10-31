@@ -32,7 +32,9 @@ class Expense {
         payerId = data[payerIdField],
         price = Monetary.fromString(data[priceField]),
         date = DateTime.parse(data[dateField]),
-        tags = data[tagsField].split(',').map(stringToExpenseTag).toList();
+        tags = List<String>.from(data[tagsField].split(','))
+            .map(stringToExpenseTag)
+            .toList();
 
   Map<String, dynamic> toMap() {
     return {
@@ -40,7 +42,7 @@ class Expense {
       payerIdField: payerId,
       priceField: price.toString(),
       dateField: date.toIso8601String(),
-      'tags': tags.map(expenseTagToString).toList().join(','),
+      tagsField: tags.map(expenseTagToString).toList().join(','),
     };
   }
 
