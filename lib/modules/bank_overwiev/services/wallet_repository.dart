@@ -27,4 +27,10 @@ class WalletRepository {
     final wallets = await db.query(tableName);
     return wallets.map((data) => Wallet.fromMap(data)).toList();
   }
+
+  Future<String> delete(String walletId) async {
+    await db.delete(tableName,
+        where: '${Wallet.idField} = ?', whereArgs: [walletId]);
+    return walletId;
+  }
 }

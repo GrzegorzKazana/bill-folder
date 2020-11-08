@@ -32,6 +32,11 @@ class WalletDetailState extends AsyncState<WalletDetails> {
     if (_currentWalletId == walletId) return;
     _currentWalletId = walletId;
 
+    if (walletId == null) {
+      dataLoaded(WalletDetails.empty());
+      return;
+    }
+
     initFetch();
 
     repo.getByWalletId(walletId).then(dataLoaded).catchError(requestError);

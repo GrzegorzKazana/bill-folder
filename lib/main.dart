@@ -21,6 +21,8 @@ void main() async {
     await db.execute(WalletRepository.init);
     await db.execute(ParticipantRepository.init);
     await db.execute(ExpenseRepository.init);
+  }, onConfigure: (db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
   });
 
   runApp(MyApp(db: db, prefs: prefs));
@@ -44,9 +46,8 @@ class MyApp extends StatelessWidget {
               WalletDetailRepository(db,
                   participantRepo: ParticipantRepository(db),
                   expenseRepo: ExpenseRepository(db))),
-          update: (_, wallet, detail) => wallet.currentWallet != null
-              ? (detail..loadDetails(wallet.currentWallet.id))
-              : detail)
+          update: (_, wallet, detail) =>
+              detail..loadDetails(wallet.currentWalletId))
     ];
 
     return MaterialApp(

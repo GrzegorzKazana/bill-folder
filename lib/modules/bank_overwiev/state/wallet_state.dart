@@ -48,6 +48,14 @@ class WalletState extends AsyncState<List<Wallet>> {
     }).catchError(requestError);
   }
 
+  void deleteWallet(String walletId) {
+    repo.delete(walletId).then((_) {
+      _currentWallet = null;
+      prefs.remove(currentWalletKey);
+      loadWallets();
+    }).catchError(requestError);
+  }
+
   Wallet _getWalletById(String currentWalletId, List<Wallet> wallets) {
     return wallets.firstWhere((w) => w.id == currentWalletId,
         orElse: () => null);

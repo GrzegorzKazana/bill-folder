@@ -1,9 +1,7 @@
 import 'package:bill_folder/common/models/monetary.dart';
 
-import '../models/Wallet.dart';
 import '../models/Expense.dart';
 import '../models/Participant.dart';
-import '../models/Currency.dart';
 
 class ExpenseStatsService {
   Monetary sumExpenses(List<Expense> expenses) {

@@ -21,7 +21,7 @@ class ExpenseRepository {
     ${Expense.priceField} text not null,
     ${Expense.dateField} text not null,
     ${Expense.tagsField} text not null,
-    foreign key (${Expense.payerIdField}) references ${ParticipantRepository.tableName}(${Participant.idField})
+    foreign key (${Expense.payerIdField}) references ${ParticipantRepository.tableName}(${Participant.idField}) on delete cascade
   );
   ''';
 

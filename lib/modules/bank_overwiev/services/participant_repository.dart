@@ -18,7 +18,7 @@ class ParticipantRepository {
     ${Participant.walletIdField} text not null,
     ${Participant.nameField} text not null,
     ${Participant.avatarColorField} integer not null,
-    foreign key (${Participant.walletIdField}) references ${WalletRepository.tableName}(${Wallet.idField})
+    foreign key (${Participant.walletIdField}) references ${WalletRepository.tableName}(${Wallet.idField}) on delete cascade
   );
   ''';
 
