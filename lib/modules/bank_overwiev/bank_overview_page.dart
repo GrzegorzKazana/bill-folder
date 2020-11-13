@@ -68,9 +68,10 @@ class _BankOverviewPageState extends State<BakOverviewPage>
     final expense = await showDialog(
         context: context,
         child: AddPaymentDialog(
-            walletCurrency: wallet.currentWalletCurrency,
-            participants: detail.participants,
-            initialPayer: initialPayer));
+          walletCurrency: wallet.currentWalletCurrency,
+          participants: detail.participants,
+          initialPayer: initialPayer,
+        ));
 
     if (expense == null) return;
 
