@@ -60,24 +60,27 @@ class _CameraDialogState extends State<CameraDialog> {
         if (snapshot.connectionState != ConnectionState.done)
           return Center(child: CircularProgressIndicator());
 
-        return Stack(children: [
-          CameraPreview(_controller),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Expanded(
-                    child: Container(
-                        color: Colors.black54,
-                        child: IconButton(
-                            iconSize: 64,
-                            icon: Icon(
-                              Icons.camera,
-                              color: Colors.white70,
-                            ),
-                            onPressed: () => _takePicture(context))))
-              ]))
-        ]);
+        return AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: Stack(children: [
+              CameraPreview(_controller),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            child: Container(
+                                color: Colors.black54,
+                                child: IconButton(
+                                    iconSize: 64,
+                                    icon: Icon(
+                                      Icons.camera,
+                                      color: Colors.white70,
+                                    ),
+                                    onPressed: () => _takePicture(context))))
+                      ]))
+            ]));
       },
     ));
   }

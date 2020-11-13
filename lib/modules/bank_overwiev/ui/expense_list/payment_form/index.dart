@@ -94,7 +94,10 @@ class PaymentForm extends StatelessWidget {
   void _deleteCurrentPhoto() {
     if (photoPath == null) return;
 
-    File(photoPath).deleteSync();
+    final file = File(photoPath);
+
+    if (file.existsSync()) file.deleteSync();
+
     onPhotoPathChanged(null);
   }
 
@@ -146,7 +149,7 @@ class PaymentForm extends StatelessWidget {
                 input: PhotoInput(
                     photoPath: photoPath,
                     deletePhoto: _deleteCurrentPhoto,
-                    showCameraDialog: () => _showCameraDialog(context)))
+                    showCameraDialog: () => _showCameraDialog(context))),
           ],
         ));
   }

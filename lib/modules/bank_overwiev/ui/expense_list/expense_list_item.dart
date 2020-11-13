@@ -29,6 +29,10 @@ class ExpenseListItem extends StatelessWidget {
   String get _expenseTags => expense.tags.map(formatExpenseTag).join(', ');
 
   void _showPicture(BuildContext context) async {
+    final fileExists = await File(expense.photo).exists();
+
+    if (!fileExists) return;
+
     showDialog(
         context: context,
         child: Dialog(
