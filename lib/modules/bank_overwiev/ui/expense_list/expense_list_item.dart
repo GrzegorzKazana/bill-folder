@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bill_folder/common/utils/format_date.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,18 @@ class ExpenseListItem extends StatelessWidget {
   String get _currency => formatCurrency(walletCurrency);
   String get _paymentDate => formatDate(expense.date);
   String get _expenseTags => expense.tags.map(formatExpenseTag).join(', ');
+
+  void _showPicture(BuildContext context) async {
+    showDialog(
+        context: context,
+        child: Dialog(
+            child: Image.file(
+          File(expense.photo),
+          fit: BoxFit.cover,
+          height: double.infinity,
+          width: double.infinity,
+        )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +81,25 @@ class ExpenseListItem extends StatelessWidget {
                                 style: Theme.of(context).textTheme.subtitle1)
                           ])),
                 ),
-                PopupMenuButton(
-                    onSelected: (str) =>
-                        str == 'Delete' ? onConfirmDelete() : onEditPayment(),
-                    itemBuilder: (_) => [
-                          PopupMenuItem<String>(
-                              child: Text('Edit'), value: 'Edit'),
-                          PopupMenuItem<String>(
-                              child: Text('Delete'), value: 'Delete'),
-                        ]),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    PopupMenuButton(
+                        onSelected: (str) => str == 'Delete'
+                            ? onConfirmDelete()
+                            : onEditPayment(),
+                        itemBuilder: (_) => [
+                              PopupMenuItem<String>(
+                                  child: Text('Edit'), value: 'Edit'),
+                              PopupMenuItem<String>(
+                                  child: Text('Delete'), value: 'Delete'),
+                            ]),
+                    if (expense.photo != null)
+                      IconButton(
+                          icon: Icon(Icons.photo),
+                          onPressed: () => _showPicture(context)),
+                  ],
+                )
               ],
             )));
   }
