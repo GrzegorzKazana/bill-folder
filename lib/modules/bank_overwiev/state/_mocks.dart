@@ -82,4 +82,5 @@ final mockExpenses = List.generate(
         payerId: randomParticipant(mockParticipants).id,
         price: randomMonetary(),
         date: randomReasonableDate(),
-        tags: randomTags()));
+        tags: randomTags(),
+        photo: ''));
