@@ -34,6 +34,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
   Monetary price;
   DateTime paymentDate = DateTime.now();
   Participant payer;
+  String photoPath;
 
   String get _initalExpenseId => widget?.initialExpense?.id;
   String get _title => widget.title ?? 'Add payment';
@@ -48,6 +49,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
       selectedTags = widget.initialExpense.tags;
       price = widget.initialExpense.price;
       paymentDate = widget.initialExpense.date;
+      photoPath = widget.initialExpense.photo;
     }
   }
 
@@ -59,7 +61,8 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
         payerId: payer.id,
         price: price,
         date: paymentDate,
-        tags: selectedTags);
+        tags: selectedTags,
+        photo: photoPath);
 
     Navigator.of(context).pop(data);
   }
@@ -79,6 +82,8 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
         onPayerChanged: (payerVal) => setState(() => payer = payerVal),
         paymentDate: paymentDate,
         onPaymentDateChanged: (date) => setState(() => paymentDate = date),
+        photoPath: photoPath,
+        onPhotoPathChanged: (photo) => setState(() => photoPath = photo),
       ),
       footer: [
         TextButton(

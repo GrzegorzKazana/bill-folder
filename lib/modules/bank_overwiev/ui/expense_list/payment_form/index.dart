@@ -1,13 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:bill_folder/common/models/monetary.dart';
 import 'package:bill_folder/common/components/choice_chip_dialog.dart';
 import 'package:bill_folder/common/components/dropdown_input.dart';
 import 'package:bill_folder/common/components/labeled_form_field_container.dart';
+import 'package:bill_folder/common/components/camera_dialog.dart';
 
 import './price_input.dart';
 import './date_input.dart';
 import './tag_list.dart';
+import './photo_input.dart';
 import '../../../models/ExpenseTag.dart';
 import '../../../models/Participant.dart';
 import '../../../models/Currency.dart';
@@ -30,17 +33,23 @@ class PaymentForm extends StatelessWidget {
 
   final Currency walletCurrency;
 
-  PaymentForm(
-      {this.selectedTags = const [],
-      this.onSelectedTagsChanged,
-      this.price,
-      this.onPriceChanged,
-      this.payer,
-      this.possiblePayers = const [],
-      this.onPayerChanged,
-      this.paymentDate,
-      this.onPaymentDateChanged,
-      this.walletCurrency});
+  final String photoPath;
+  final void Function(String) onPhotoPathChanged;
+
+  PaymentForm({
+    this.selectedTags = const [],
+    this.onSelectedTagsChanged,
+    this.price,
+    this.onPriceChanged,
+    this.payer,
+    this.possiblePayers = const [],
+    this.onPayerChanged,
+    this.paymentDate,
+    this.onPaymentDateChanged,
+    this.walletCurrency,
+    this.photoPath,
+    this.onPhotoPathChanged,
+  });
 
   Future<void> _showChipDialog(BuildContext context) async {
     FocusScope.of(context).unfocus();
@@ -69,6 +78,27 @@ class PaymentForm extends StatelessWidget {
         lastDate: DateTime(2100));
 
     if (maybeDate != null) onPaymentDateChanged(maybeDate);
+  }
+
+  Future<void> _showCameraDialog(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
+    final photo =
+        await showDialog<String>(context: context, child: CameraDialog());
+
+    if (photo == null) return;
+
+    onPhotoPathChanged(photo);
+  }
+
+  void _deleteCurrentPhoto() {
+    if (photoPath == null) return;
+
+    final file = File(photoPath);
+
+    if (file.existsSync()) file.deleteSync();
+
+    onPhotoPathChanged(null);
   }
 
   Participant _getParticipantById(String id, List<Participant> participants) {
@@ -114,6 +144,12 @@ class PaymentForm extends StatelessWidget {
                   selectedTags: selectedTags.map(formatExpenseTag).toList(),
                   onTap: () => _showChipDialog(context),
                 )),
+            LabeledFormFieldContainer(
+                label: 'Photo:',
+                input: PhotoInput(
+                    photoPath: photoPath,
+                    deletePhoto: _deleteCurrentPhoto,
+                    showCameraDialog: () => _showCameraDialog(context))),
           ],
         ));
   }

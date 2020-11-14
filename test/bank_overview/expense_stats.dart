@@ -14,7 +14,11 @@ void main() {
     List<Expense> fromPrices(List<Monetary> prices) {
       return prices
           .map((p) => Expense(
-              payerId: '', date: randomReasonableDate(), tags: [], price: p))
+              payerId: '',
+              date: randomReasonableDate(),
+              tags: [],
+              price: p,
+              photo: ''))
           .toList();
     }
 
@@ -41,22 +45,26 @@ void main() {
             payerId: participant.id,
             price: Monetary(unit: 10, cent: 24),
             date: DateTime(2018),
-            tags: []),
+            tags: [],
+            photo: ''),
         Expense(
             payerId: participant.id,
             price: Monetary(unit: 2, cent: 1),
             date: DateTime(2019),
-            tags: []),
+            tags: [],
+            photo: ''),
         Expense(
             payerId: otherParticipantId,
             price: Monetary(unit: 11, cent: 73),
             date: DateTime(2020),
-            tags: []),
+            tags: [],
+            photo: ''),
         Expense(
             payerId: someOtherParticipantId,
             price: Monetary(unit: 0, cent: 99),
             date: DateTime(2017),
-            tags: []),
+            tags: [],
+            photo: ''),
       ];
 
       final result =
