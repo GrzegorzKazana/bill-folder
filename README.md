@@ -1,16 +1,31 @@
 # bill_folder
 
-A new Flutter project.
+[Flutter](https://flutter.dev/) application for sharing expenses with your friends - no more lost receipts or complex spreadsheets!
 
-## Getting Started
+## Quick start
 
-This project is a starting point for a Flutter application.
+### Development
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone the repo
+2. Fetch dependencies
+3. Start your device emulator
+4. Run the project
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```bash
+git clone https://github.com/GrzegorzKazana/bill-folder.git
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Tests
+
+```bash
+flutter test
+```
+
+## Demo
+
+<img src="resources/flutter_01_s.png" alt="Main view" width="200"/>
+<img src="resources/flutter_02_s.png" alt="Main view - detailed" width="200"/>
+<img src="resources/flutter_03_s.png" alt="Payment form" width="200"/>
+<img src="resources/flutter_04_s.png" alt="Expense list" width="200"/>
